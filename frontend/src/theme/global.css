@@ -230,6 +230,23 @@ ol {
   }
 }
 
+/* The reveal's resting state, once its own transition has finished (App.tsx
+   swaps to this class on transitionend). Deliberately carries no transform,
+   filter or will-change: transform of ANY kind, not even the inert
+   `transform: scale(1)` / `will-change: transform` that .app-reveal--visible
+   sits at after animating in. Any of those on an ancestor makes it the
+   containing block for every `position: fixed` descendant -- including the
+   sidebar -- so instead of staying pinned to the real viewport, the sidebar
+   would be "fixed" to this wrapper's own box. That box is exactly as tall as
+   the routed page, so on any page long enough to scroll, the sidebar (and
+   its collapse toggle) scrolls away with the content instead of staying put.
+   Settling into a plain, transform-free class once the one-time reveal
+   animation is done is what keeps position: fixed meaning "fixed to the
+   viewport" for the rest of the session. */
+.app-reveal--settled {
+  opacity: 1;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;

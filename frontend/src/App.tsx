@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type TransitionEvent } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
@@ -39,6 +39,11 @@ function shouldShowIntro(): boolean {
 export function App() {
   const [introActive, setIntroActive] = useState(shouldShowIntro);
   const [dashboardVisible, setDashboardVisible] = useState(() => !introActive);
+  // Once the reveal's own transition finishes, its scale/opacity classes are
+  // dropped for the rest of the session -- see the CSS comment on
+  // .app-reveal--settled for why this can't just be the resting state of
+  // .app-reveal--visible.
+  const [revealSettled, setRevealSettled] = useState(() => !introActive);
 
   const handleIntroFinish = () => {
     try {
@@ -49,13 +54,26 @@ export function App() {
     setDashboardVisible(true);
   };
 
+  const handleRevealTransitionEnd = (event: TransitionEvent<HTMLDivElement>) => {
+    if (event.target === event.currentTarget && event.propertyName === 'opacity') {
+      setRevealSettled(true);
+    }
+  };
+
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         {introActive && (
           <IntroSplash onFinish={handleIntroFinish} onExitComplete={() => setIntroActive(false)} />
         )}
-        <div className={`app-reveal${dashboardVisible ? ' app-reveal--visible' : ''}`}>
+        <div
+          className={
+            revealSettled
+              ? 'app-reveal--settled'
+              : `app-reveal${dashboardVisible ? ' app-reveal--visible' : ''}`
+          }
+          onTransitionEnd={handleRevealTransitionEnd}
+        >
           <Routes>
             <Route element={<Layout />}>
               <Route index element={<Dashboard />} />

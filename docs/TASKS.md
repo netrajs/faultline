@@ -57,7 +57,7 @@ commit their own tasks from their own GitHub account — see `docs/PROGRESS.md` 
 | 2.6 | Hypothesis property suite for the ten invariants | swamini1662 | `[ ]` |
 | 2.7 | Validation endpoints | netrajs | `[ ]` |
 | 2.8 | Validation screen — live harness run, decoy inspector | sanchitaaX | `[ ]` |
-| 2.9 | Graph Explorer with the naive-reachability contrast | sanchitaaX | `[ ]` |
+| 2.9 | Graph Explorer with the naive-reachability contrast | sanchitaaX | `[x]` |
 
 ## Phase 3 — Remediation
 

@@ -26,7 +26,7 @@
 | Generator | **Done for Phase 1.** Facts, planted scenarios, and all 14 decoy/twin pairs; seeded live (graph v1, 691 nodes / 869 edges, 12 scenarios, 28 decoy instances). |
 | Oracle | In progress. Written from the spec alone, deliberately blind to the engine. |
 | Engine | **Done for Phase 1.** Independent rule loader/precondition evaluator, log-space scorer, best-first search with dominance pruning and K-best enumeration, result persistence, `engine.discover` CLI. 146/146 backend tests passing. Two real bugs found only by running discovery against the live graph rather than unit tests alone — top-k was capped per entry instead of per target across the run, and the expansion budget was a shared first-come pool that let one privileged user's search starve every other entry — both fixed. Live runs completed: `external_phish` (160 entries, 11 paths, 1617 rejected, truncated at the expansion cap) and `public_only` (101 entries, 4 paths, 1066 rejected, finished without truncation). |
-| Frontend | **Done for Phase 1, plus Graph Explorer.** App shell, routing, runtime theming from the config API, Dashboard and Attack Paths screens with the hop/factor breakdown, and a real Graph Explorer (live stats, searchable node browser, node detail, saved queries, and the naive-reachability-vs-engine contrast panel). A light/sky-blue visual redesign is in progress per team direction. |
+| Frontend | **Done for Phase 1, plus Graph Explorer (task 2.9).** App shell, routing, runtime theming from the config API, Dashboard and Attack Paths screens with the hop/factor breakdown, and Graph Explorer (live stats, searchable node browser, node detail, saved queries, and the naive-reachability-vs-engine contrast panel — 61 naive candidates vs. 4 engine-verified, live). Visual direction went through several rounds per team feedback and settled on a light sky-blue palette with real frosted-glass panels (translucent + backdrop blur, not solid white) — see session log below. |
 | Contracts | In progress. Checkpoint registry and EIP-712 approvals. |
 
 ---
@@ -146,6 +146,33 @@ Append one entry per working session. Keep it short and factual.
   contributor's own alternate accounts, since the concern is the fabricated signal itself
   (a contribution graph misrepresenting when and by whom code was actually written), not only who
   reads it.
+- Finished the engine: fixed the remaining scoring/rules test failures, then found and fixed two
+  real bugs by actually running discovery against the live graph rather than trusting unit tests
+  alone (top-k enforced per entry instead of per target across a run; the expansion budget was a
+  shared first-come pool letting one privileged user starve every other entry's search). 146/146
+  backend tests passing; live runs completed for both `external_phish` and `public_only`.
+  `docs/TASKS.md` 1.4-1.10 marked done.
+- Built Graph Explorer (task 2.9): live graph stats, a searchable/filterable node browser with a
+  detail panel, a saved-query runner, and the naive-reachability-vs-engine contrast panel — the
+  product's central claim, rendered with real numbers (61 naive candidates vs. 4 engine-verified
+  paths, 57 false positives refused).
+- Added `liquid-glass-react` and used it in two deliberate spots (sidebar logo mark, a dashboard
+  "most critical path" spotlight hero) rather than on every repeated card, since the real SVG
+  displacement effect is a meaningful per-instance cost.
+- Went through several rounds of visual direction per live team feedback and settled on: a light
+  theme with a sky-blue field, white/near-white frosted-glass panels (translucent + backdrop blur,
+  not solid white or heavy dark glass), a coordinated five-color accent family, and higher-contrast
+  near-black type. A dark "cyber HUD" variant was tried on request and then explicitly reverted
+  back to the light theme in the same session — recorded here so a future session doesn't
+  rediscover the same dead end.
+- Connected the Higgsfield MCP for a moving background asset; blocked for now — the connected
+  account has 0 credits and no active free-trial allowance, so no generation has been submitted.
+  Provided a ready-to-use prompt and offered a no-asset CSS/canvas alternative instead, pending the
+  team's choice.
+- **Housekeeping note:** doc updates lagged behind commits for a stretch this session (Graph
+  Explorer, the liquid-glass showcase, and both theme reworks landed before this entry caught up).
+  Update `docs/TASKS.md` / `docs/PROGRESS.md` in the same batch as the commit that finishes a task,
+  not at the end of a long UI-iteration stretch.
 
 ### 2026-09-11 — Session 3 (parallel build)
 

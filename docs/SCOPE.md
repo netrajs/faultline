@@ -68,12 +68,25 @@ have exactly the same limitation.
 An engine built on variable-length graph matching reports graph *reachability* and calls it attack
 paths. That is precisely the false-positive failure the top judging criterion punishes.
 
-**Therefore:** the datastore is a system of record and a provenance store. Analysis runs against
-an immutable in-memory CSR snapshot keyed by graph version, plus a copy-on-write overlay for
-simulation.
+**Therefore:** the datastore is a system of record, a provenance store, and an exploration
+surface — but not the engine. Analysis runs against an immutable in-memory CSR snapshot keyed by
+graph version, plus a copy-on-write overlay for simulation.
 
-This decision is what makes D12 (MySQL) cheap: since no analysis was ever going to run in the
-database, the database does not need to be a graph database.
+Note precisely what this does and does not say. It says *pathfinding cannot be a database query.*
+It says nothing against storing a graph in a graph database — and Neo4j is where the graph
+belongs (D12).
+
+**And this limitation is a demo asset, not an embarrassment.** In Graph Explorer we run the naive
+BloodHound-style query live:
+
+```cypher
+MATCH p = (u:User)-[*1..6]->(c:CrownJewel) RETURN count(p)
+```
+
+It returns a large number. faultline's engine returns a much smaller one. The difference is
+decoys and precondition failures, and every excluded candidate carries a machine-generated reason
+naming the attribute that killed it. That side-by-side *is* the product thesis, executed live,
+against the same database — which is exactly the "path correctness" criterion made visible.
 
 ### D2 — `CAN_ESCALATE_TO` is deleted from the schema. `BLOCKER FIX`
 
@@ -302,11 +315,25 @@ programmatically validated: every entity named in the narrative must appear in t
 Fail the gate → reject and regenerate. Narratives are cached by path content hash. An offline
 template renderer is the fallback so the demo never depends on an API key or wifi.
 
-### D12 — MySQL is the single source of truth. Nothing is hardcoded. `TEAM DIRECTIVE`
+### D12 — Two stores, split by shape. Nothing is hardcoded. `TEAM DIRECTIVE`
 
-**Store: local MySQL 8.** Not Neo4j. D1 already established that no analysis runs in the
-database, so a graph database buys us nothing and costs us a JVM, a plugin version-matching
-problem, and a heavier local setup. MySQL is the lower-risk choice for the same capability.
+**Neo4j 5 Community holds the graph. MySQL 8 holds everything else.**
+
+The split follows the shape of the data rather than a preference for one engine:
+
+| Store | Holds | Why |
+|---|---|---|
+| **Neo4j** | Nodes, edges, graph versions, crown-jewel labels | A graph belongs in a graph database. It keeps the fact model honest, it is the substrate practitioners already associate with this problem, and it gives Graph Explorer real Cypher — including the live naive-query contrast described in D1. |
+| **MySQL** | Rules, techniques, capability atoms, scoring config, threat models, analysis results, path provenance, remediation state, ground-truth manifest, eval metrics, audit ledger, UI config | Tabular configuration wants a tabular store, and the append-only audit ledger specifically wants strict sequencing plus ACID guarantees, which is not Neo4j's strength. |
+
+Neo4j is the store and the exploration surface. It is **not** the engine — D1 is unchanged and
+non-negotiable: the moment pathfinding becomes a Cypher query, we are reporting reachability and
+calling it attack paths, which forfeits the top judging criterion.
+
+**Cost accepted:** two databases is two things that can fail on demo day. Mitigated by a single
+bring-up script, a health endpoint that reports both, and the rule that Neo4j being down degrades
+Graph Explorer only — analysis runs from the in-memory snapshot and MySQL, so the core demo
+survives.
 
 **Nothing may be hardcoded anywhere in the stack.** Not in Python constants, not in TypeScript
 literals, not in seeded JSON fixtures the app reads at runtime, not in component props. If the
@@ -331,18 +358,16 @@ values appear, and they exist to *populate* the database, not to be read at runt
 
 Two consequences worth planning for:
 
-- **Graph storage in a relational store.** `nodes(id, kind, ...)` and
-  `edges(id, src_id, dst_id, type, ...)` with typed attribute columns plus a JSON column for
-  the long tail. Indexed on `(src_id, type)` and `(dst_id, type)`. The engine issues two bulk
-  `SELECT`s at startup and builds the CSR adjacency in memory — we never traverse in SQL, so
-  the relational shape costs nothing at query time.
+- **Graph load.** The engine pulls nodes and edges from Neo4j in two bulk reads at startup and
+  builds the CSR adjacency in memory. We never traverse in Cypher during analysis, so Neo4j is
+  never on the hot path — it serves the load, the Graph Explorer, and the naive-query contrast.
 - **Snapshot/version discipline.** Every analysis result records the `graph_version` it was
   computed against, so a mutation during remediation cannot silently invalidate a displayed
   number. This is the same guarantee we would have needed anyway.
 
-**Tradeoff accepted:** we lose the "look, live Cypher" moment in the Graph Explorer. We replace
-it with something better aligned to the rubric — a live rule-trace showing the derivation, which
-demonstrates the engine rather than the database.
+**Also DB-resident, not hardcoded:** the demo's Cypher queries themselves. Graph Explorer's saved
+queries — including the naive-reachability one we deliberately show failing — are rows, so the
+demo script is data and can be edited without a rebuild.
 
 ---
 
@@ -350,8 +375,9 @@ demonstrates the engine rather than the database.
 
 | Layer | Choice | Note |
 |---|---|---|
-| Datastore | **MySQL 8** | Single source of truth for everything (D12). Bulk-loaded into memory at startup. |
-| DB access | SQLAlchemy 2.x Core + Alembic migrations | Migrations are how schema and seed data ship. |
+| Graph store | **Neo4j 5 Community** | The identity/asset graph and the Graph Explorer surface (D12). Bulk-read into memory at startup; never on the analysis hot path. |
+| Relational store | **MySQL 8** | Rules, scoring, results, remediation, ground truth, audit ledger, UI config (D12). |
+| DB access | SQLAlchemy 2.x Core + numbered SQL migrations; official `neo4j` Python driver | Plain SQL over generated DDL: the schema is part of the correctness argument and hand-written DDL reviews better. |
 | Analysis engine | Python, in-memory CSR snapshot + COW overlay | Where all correctness lives. |
 | Graph algorithms | hand-rolled Dijkstra/A*, Dinic; `rustworkx` if profiling demands | `networkx` acceptable at this scale. |
 | API | FastAPI + Pydantic v2 | |
@@ -377,7 +403,7 @@ Tracked in `docs/PROGRESS.md` under Open Questions.
 
 | Cut | Reason |
 |---|---|
-| Neo4j (and GDS) | D1 means no analysis runs in the DB; D12 makes MySQL the store. Removes JVM, plugin version-matching, and stale-projection corruption on the demo's critical path. |
+| Neo4j GDS plugin | D1 means no analysis runs in the DB, so GDS buys nothing; its projections also go stale during remediation mutation, silently corrupting numbers on the demo's critical path. Neo4j itself is kept — see D12. |
 | Reports screen (PDF exec/technical/compliance) | Lowest rubric value, highest polish cost. Replaced by the Validation screen. |
 | `CAN_ESCALATE_TO` stored edge | Circular — see D2. |
 | Yen's / Eppstein for top-k | Too slow / semantically wrong — see D4. |
@@ -396,7 +422,7 @@ Four subsystems, one owner each. Ownership means "you can answer a judge's quest
 | Owner | Workstream | Scope |
 |---|---|---|
 | **tripathidhruv** | Engine | Fact/rule model, precondition-aware search, scoring, chokepoints, blast radius, incremental invalidation. |
-| **swamini1662** | Data & Proof | MySQL schema and migrations, synthetic generator, ground-truth manifest, decoy/twin registry, brute-force oracle, eval harness, property tests. |
+| **swamini1662** | Data & Proof | MySQL schema and migrations, Neo4j constraints and loaders, synthetic generator, ground-truth manifest, decoy/twin registry, brute-force oracle, eval harness, property tests. |
 | **sanchitaaX** | Frontend | All screens, graph visualization, provenance/attribution UI, motion system. |
 | **netrajs** | Platform | Repo, API layer, audit log + Merkle anchoring, Solidity contracts, LLM narration gate, Docker, demo choreography. |
 
@@ -409,11 +435,11 @@ is available; the oracle must precede the engine to be independent; path ids mus
 hashes before the narrative cache exists.
 
 **Phase 0 — Foundations that cannot be retrofitted.**
-MySQL schema + migrations → `rules` spec (prose first, rows second) → generator emitting
-primitive facts + manifest + decoy/twin registry **into MySQL** → `oracle/reference.py` written
+MySQL schema + migrations, Neo4j constraints → `rules` spec (prose first, rows second) → generator emitting
+primitive facts into Neo4j, manifest + decoy/twin registry into MySQL → `oracle/reference.py` written
 from the spec → seed/canonical serialisation contract → path content hashing.
 
-**Phase 1 — Vertical slice.** MySQL → engine → scoring → one API endpoint → one screen showing a
+**Phase 1 — Vertical slice.** Neo4j + MySQL → engine → scoring → one API endpoint → one screen showing a
 real ranked path with its provenance. End-to-end, demoable, no placeholders.
 
 **Phase 2 — Correctness.** Eval harness, precision/recall/NDCG, Hypothesis property suite,

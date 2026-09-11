@@ -10,10 +10,11 @@ export const FALLBACK_NAV_ITEMS: NavItem[] = [
   { code: 'dashboard', label: 'Dashboard', route: '/', icon: 'chart-bar', description: 'Current risk posture at a glance.', sort_order: 1 },
   { code: 'paths', label: 'Attack paths', route: '/paths', icon: 'route', description: 'Discovered paths, ranked, with their derivations.', sort_order: 2 },
   { code: 'graph', label: 'Graph', route: '/graph', icon: 'topology-star-3', description: 'Explore the identity and asset graph.', sort_order: 3 },
+  { code: 'settings', label: 'Settings', route: '/settings', icon: 'settings', description: 'Scoring weights, threat model, data generation.', sort_order: 4 },
 ];
 
 /** Routes this build actually renders, used to decide whether a nav item is live or a stub. */
-export const IMPLEMENTED_ROUTES = new Set(['/', '/paths', '/graph']);
+export const IMPLEMENTED_ROUTES = new Set(['/', '/paths', '/graph', '/settings']);
 
 export function findActiveNavItem(pathname: string, items: NavItem[]): NavItem | undefined {
   if (items.length === 0) return undefined;

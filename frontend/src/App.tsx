@@ -9,6 +9,7 @@ import { Dashboard } from '@/pages/Dashboard';
 import { GraphExplorer } from '@/pages/GraphExplorer';
 import { NotFound } from '@/pages/NotFound';
 import { PathDetail } from '@/pages/PathDetail';
+import { Settings } from '@/pages/Settings';
 import { prefersReducedMotion } from '@/theme/motion';
 
 const queryClient = new QueryClient({
@@ -80,6 +81,7 @@ export function App() {
               <Route path="paths" element={<AttackPaths />} />
               <Route path="paths/:pathId" element={<PathDetail />} />
               <Route path="graph" element={<GraphExplorer />} />
+              <Route path="settings" element={<Settings />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>

@@ -295,3 +295,117 @@ export interface Vocabularies {
   criticality: VocabularyEntry[];
   classifications: VocabularyEntry[];
 }
+
+// ---------------------------------------------------------------------------
+// /api/config/scoring, /api/config/threat-models (also served combined by
+// /api/settings/overview -- see below)
+// ---------------------------------------------------------------------------
+
+export interface ScoringConfigRow {
+  version: string;
+  label: string;
+  description: string;
+  p_clamp_min: number;
+  p_clamp_max: number;
+  raw_max: number;
+  w_likelihood: number;
+  w_impact: number;
+  w_stealth: number;
+}
+
+/**
+ * DECIMAL columns the config router does not cast to float (only the
+ * top-level scoring_config row gets that treatment) -- these arrive as
+ * strings over JSON, so callers parse with Number() at render time rather
+ * than the type lying about it.
+ */
+export interface TechniqueBaseline {
+  technique_code: string;
+  technique_name: string;
+  base_p_succ: string;
+  base_detectability: string;
+  rationale: string;
+}
+
+export interface ScoringModifier {
+  code: string;
+  label: string;
+  description: string;
+  applies_to: string;
+  attr_path: string | null;
+  operator: string | null;
+  value_json: string | null;
+  target: string;
+  beta: string;
+  is_hard_block: IntBool;
+  sort_order: number;
+}
+
+export interface ImpactWeight {
+  dimension: string;
+  code: string;
+  weight: string;
+}
+
+export interface ScoringOverview {
+  config: ScoringConfigRow;
+  baselines: TechniqueBaseline[];
+  modifiers: ScoringModifier[];
+  impact_weights: ImpactWeight[];
+}
+
+export interface ThreatModelGrant {
+  threat_model_code: string;
+  seq: number;
+  capability_code: string;
+  capability_label: string;
+  applies_to_kind: string | null;
+  applies_to_node: string | null;
+}
+
+export interface ThreatModel {
+  code: string;
+  label: string;
+  description: string;
+  is_default: IntBool;
+  sort_order: number;
+  grants: ThreatModelGrant[];
+}
+
+// ---------------------------------------------------------------------------
+// /api/settings/*
+// ---------------------------------------------------------------------------
+
+/** Same shape as GraphVersion in api/graph.ts -- the overview reuses that query. */
+export interface SettingsGraphVersion {
+  id: number;
+  label: string;
+  origin: string;
+  seed: number | null;
+  generator_version: string | null;
+  canonical_hash: string;
+  node_count: number;
+  edge_count: number;
+  created_at: string | null;
+}
+
+export interface SettingsOverview {
+  graph_version: SettingsGraphVersion;
+  scoring: ScoringOverview;
+  threat_models: ThreatModel[];
+  anchor_mode: string;
+  narration_available: boolean;
+}
+
+export interface RegenerateRequest {
+  seed?: number;
+  scale?: 'small' | 'medium' | 'large';
+}
+
+export interface RegenerateResponse {
+  seed: number;
+  scale: string;
+  scenario_count: number;
+  stdout: string;
+  graph_version: SettingsGraphVersion;
+}

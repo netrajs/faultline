@@ -71,12 +71,96 @@ def discover(directory: Path) -> list[Migration]:
 def split_statements(sql: str) -> list[str]:
     """Split a migration file into individual statements.
 
-    Line comments are stripped first so that a semicolon inside a comment cannot
-    split a statement in half. The DDL in this project contains no string
-    literals with embedded semicolons, which keeps this honest and simple.
+    A single pass that tracks whether it is inside a string literal, a quoted
+    identifier, or a comment, so a semicolon only terminates a statement when it
+    is genuinely at top level.
+
+    Splitting on ``;`` after stripping comments looks equivalent and is not:
+    prose inside a seeded description ("...directory identity; can make
+    authenticated requests") contains semicolons, and a naive split cuts the
+    INSERT in half. That is a corruption a smoke test would not necessarily
+    catch, because both halves can still parse as something.
+
+    Handles MySQL's ``''`` and backslash escapes inside strings, backtick
+    identifiers, ``--`` and ``#`` line comments, and ``/* */`` blocks.
     """
-    without_comments = _LINE_COMMENT.sub("", sql)
-    return [s.strip() for s in without_comments.split(";") if s.strip()]
+    statements: list[str] = []
+    current: list[str] = []
+    quote: str | None = None
+    in_line_comment = False
+    in_block_comment = False
+    i = 0
+    length = len(sql)
+
+    while i < length:
+        char = sql[i]
+        nxt = sql[i + 1] if i + 1 < length else ""
+
+        if in_line_comment:
+            if char == "\n":
+                in_line_comment = False
+                current.append(char)
+            i += 1
+            continue
+
+        if in_block_comment:
+            if char == "*" and nxt == "/":
+                in_block_comment = False
+                i += 2
+                continue
+            i += 1
+            continue
+
+        if quote is not None:
+            current.append(char)
+            if char == "\\" and quote != "`":
+                # Backslash escapes the next character inside a MySQL string.
+                if nxt:
+                    current.append(nxt)
+                    i += 2
+                    continue
+            elif char == quote:
+                if nxt == quote:
+                    # Doubled quote is a literal quote, not a terminator.
+                    current.append(nxt)
+                    i += 2
+                    continue
+                quote = None
+            i += 1
+            continue
+
+        if char == "-" and nxt == "-":
+            in_line_comment = True
+            i += 2
+            continue
+        if char == "#":
+            in_line_comment = True
+            i += 1
+            continue
+        if char == "/" and nxt == "*":
+            in_block_comment = True
+            i += 2
+            continue
+        if char in "'\"`":
+            quote = char
+            current.append(char)
+            i += 1
+            continue
+        if char == ";":
+            statement = "".join(current).strip()
+            if statement:
+                statements.append(statement)
+            current = []
+            i += 1
+            continue
+
+        current.append(char)
+        i += 1
+
+    trailing = "".join(current).strip()
+    if trailing:
+        statements.append(trailing)
+    return statements
 
 
 def connect(settings, *, with_database: bool = True):

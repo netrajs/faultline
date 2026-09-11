@@ -22,17 +22,39 @@ body {
   line-height: var(--leading-normal);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  position: relative;
   /* A radial wash behind the glass chrome -- the ambient backdrop the glass
      surfaces are meant to sit on top of. The panels are translucent enough
      now (see --bg-panel/--bg-card) that this wash reads clearly through
      them, so it carries most of the app's color rather than the panels
      themselves -- restrained per tokens.css, never a flat solid tint. */
   background-image:
-    radial-gradient(1300px 750px at 10% -12%, var(--accent-cyan-soft), transparent 62%),
-    radial-gradient(1100px 800px at 102% 2%, var(--accent-purple-soft), transparent 58%),
-    radial-gradient(900px 600px at 50% 110%, var(--accent-purple-soft), transparent 65%);
+    radial-gradient(1300px 750px at 10% -12%, var(--wash-cyan), transparent 62%),
+    radial-gradient(1100px 800px at 102% 2%, var(--wash-purple), transparent 58%),
+    radial-gradient(900px 650px at 50% 112%, var(--wash-rose), transparent 68%);
   background-repeat: no-repeat;
   background-attachment: fixed;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+/* A faint grain over the wash so large blurred gradients read as glass
+   catching light rather than a flat digital vignette -- the texture real
+   frosted glass has that a pure gradient never does. Fixed and behind
+   everything; SVG turbulence rather than an image asset, so it costs
+   nothing to ship or load. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 h1,

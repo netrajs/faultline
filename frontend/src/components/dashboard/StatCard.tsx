@@ -10,13 +10,13 @@ interface StatCardProps {
   label: string;
   value: ReactNode;
   sublabel?: ReactNode;
-  accent?: 'cyan' | 'purple' | 'neutral';
+  accent?: 'cyan' | 'purple' | 'amber' | 'rose' | 'emerald' | 'neutral';
   delay?: number;
 }
 
 export function StatCard({ icon, label, value, sublabel, accent = 'neutral', delay = 0 }: StatCardProps) {
   return (
-    <GlassPanel padding="md" className="stat-card" {...fadeInUp(delay)}>
+    <GlassPanel padding="md" className={`stat-card stat-card--${accent}`} raised {...fadeInUp(delay)}>
       <div className={`stat-card__icon stat-card__icon--${accent}`}>
         <Icon name={icon} />
       </div>

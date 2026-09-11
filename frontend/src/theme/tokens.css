@@ -34,11 +34,29 @@
   --text-muted: #64748b;
   --text-inverse: #0a0e1a;
 
-  /* Accents */
+  /* Accents. Cyan/purple are the brand pair used for primary emphasis;
+     amber/rose/emerald exist so repeated chrome (stat cards, badges) doesn't
+     read as one color repeated five times -- these are chrome, never a
+     stand-in for the risk-tier colors, which still come from the API. */
   --accent-cyan: #38bdf8;
   --accent-purple: #8b5cf6;
+  --accent-amber: #f5a524;
+  --accent-rose: #fb7185;
+  --accent-emerald: #2dd4bf;
   --accent-cyan-soft: rgba(56, 189, 248, 0.14);
   --accent-purple-soft: rgba(139, 92, 246, 0.14);
+  --accent-amber-soft: rgba(245, 165, 36, 0.14);
+  --accent-rose-soft: rgba(251, 113, 133, 0.14);
+  --accent-emerald-soft: rgba(45, 212, 191, 0.14);
+  --gradient-brand: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+
+  /* Ambient background wash. Separate from the accent-*-soft tokens above
+     (which size icon badges) so the two can be tuned independently -- the
+     wash needs to read at a much larger scale and slightly higher chroma to
+     show clearly through the now-translucent glass panels. */
+  --wash-cyan: rgba(56, 189, 248, 0.20);
+  --wash-purple: rgba(139, 92, 246, 0.22);
+  --wash-rose: rgba(251, 113, 133, 0.12);
 
   /* Glass */
   --glass-blur: 28px;

@@ -31,13 +31,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--accent-cyan-soft), var(--accent-purple-soft));
-  color: var(--accent-cyan);
-  font-size: 16px;
+  background: var(--gradient-brand);
+  color: var(--text-inverse);
+  font-size: 17px;
   flex-shrink: 0;
+  box-shadow: 0 0 0 1px var(--border-glass-strong), 0 4px 16px -2px var(--accent-cyan);
 }
 
 .sidebar__brand-name {
@@ -87,8 +88,9 @@
 }
 
 .sidebar__link--active {
-  background: var(--accent-cyan-soft);
+  background: linear-gradient(90deg, var(--accent-cyan-soft), transparent 85%);
   color: var(--text-primary);
+  box-shadow: inset 0 0 0 1px var(--border-glass);
 }
 
 .sidebar__link--active::before {
@@ -99,7 +101,7 @@
   bottom: 20%;
   width: 3px;
   border-radius: var(--radius-pill);
-  background: var(--accent-cyan);
+  background: var(--gradient-brand);
   box-shadow: 0 0 12px var(--accent-cyan);
 }
 

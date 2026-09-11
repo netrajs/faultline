@@ -79,6 +79,7 @@ export function Dashboard() {
           label="Rejected candidates"
           value={formatCount(data.rejected_count)}
           sublabel="Precondition failures the engine refused"
+          accent="rose"
           delay={0.04}
         />
         <StatCard
@@ -92,6 +93,7 @@ export function Dashboard() {
           icon="gauge"
           label="Max risk score"
           value={data.max_risk !== null ? `${formatScore(data.max_risk)} / 10` : '—'}
+          accent="amber"
           delay={0.12}
         />
         <StatCard
@@ -99,6 +101,7 @@ export function Dashboard() {
           label="Discovery time"
           value={formatDuration(data.discovery_ms)}
           sublabel={`scoring ${data.scoring_version} · threat model ${data.threat_model}`}
+          accent="emerald"
           delay={0.16}
         />
       </div>

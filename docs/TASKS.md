@@ -67,7 +67,7 @@ commit their own tasks from their own GitHub account — see `docs/PROGRESS.md` 
 | 3.2 | Simulation by full re-derivation, both-direction delta | tripathidhruv | `[ ]` |
 | 3.3 | Dinic max-flow, node-split minimum vertex cut | tripathidhruv | `[ ]` |
 | 3.4 | Greedy set-cover chokepoints with optimality bound | tripathidhruv | `[ ]` |
-| 3.5 | Blast radius, probability-weighted by reach | tripathidhruv | `[ ]` |
+| 3.5 | Blast radius, probability-weighted by reach | tripathidhruv | `[~]` (dispatched, own worktree) |
 | 3.6 | Recommendation ranking and dependency analysis | tripathidhruv | `[ ]` |
 | 3.7 | Lifecycle service enforcing transitions from the table | netrajs | `[ ]` |
 | 3.8 | Remediation and blast-radius endpoints | netrajs | `[ ]` |

@@ -10,13 +10,28 @@
   cursor: pointer;
   opacity: 1;
   transform: scale(1);
-  /* Duration matches EXIT_MS in IntroSplash.tsx exactly -- see the comment there. */
-  transition: opacity 900ms cubic-bezier(0.16, 1, 0.3, 1), transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+  filter: blur(0px);
+  will-change: opacity, transform, filter;
+  /* Duration matches EXIT_MS in IntroSplash.tsx exactly -- see the comment
+     there. Ease-IN (accelerating away) on the way out, paired with
+     app-reveal's ease-OUT (decelerating into place) on the way in: matched,
+     complementary curves over the identical duration are what make two
+     separate elements read as one continuous camera move instead of a fade
+     bolted to a zoom. */
+  transition: opacity 1100ms cubic-bezier(0.7, 0, 0.84, 0), transform 1100ms cubic-bezier(0.7, 0, 0.84, 0),
+    filter 1100ms cubic-bezier(0.7, 0, 0.84, 0);
 }
 
 .intro-splash--exiting {
   opacity: 0;
-  transform: scale(1.18);
+  /* Scaled up by roughly the same proportion app-reveal scales down by (see
+     global.css), so the two halves of the cut grow at matched rates -- the
+     thing that actually sells "one motion" over "two things happening at
+     once". Softened by a growing blur as it goes, the way a fast camera
+     move motion-blurs in real footage, so the handoff to the sharp
+     dashboard underneath doesn't read as a hard cut. */
+  transform: scale(1.12);
+  filter: blur(18px);
   pointer-events: none;
 }
 

@@ -20,28 +20,28 @@ commit their own tasks from their own GitHub account — see `docs/PROGRESS.md` 
 | 0.7 | Setup guide | netrajs | `[x]` |
 | 0.8 | Rules specification — 15 rules, 14 decoys | tripathidhruv | `[x]` |
 | 0.9 | Seed data — vocabularies, rules, scoring, fixes, ground truth, UI config | swamini1662 | `[x]` |
-| 0.10 | Shared domain model and repository interfaces | tripathidhruv | `[ ]` |
-| 0.11 | Deterministic identifier and canonical serialisation utilities | swamini1662 | `[ ]` |
+| 0.10 | Shared domain model and repository interfaces | tripathidhruv | `[x]` |
+| 0.11 | Deterministic identifier and canonical serialisation utilities | swamini1662 | `[x]` |
 
 ## Phase 1 — Vertical slice
 
 | # | Task | Owner | Status |
 |---|---|---|---|
-| 1.1 | Synthetic generator — nodes and edges into Neo4j | swamini1662 | `[ ]` |
-| 1.2 | Generator — planted scenarios, intent-only manifest | swamini1662 | `[ ]` |
-| 1.3 | Generator — decoy and twin instances | swamini1662 | `[ ]` |
-| 1.4 | CSR snapshot loader from Neo4j, keyed by graph version | tripathidhruv | `[ ]` |
-| 1.5 | Capability-state model with dominance pruning | tripathidhruv | `[ ]` |
-| 1.6 | Precondition evaluator reading rule rows | tripathidhruv | `[ ]` |
-| 1.7 | Log-space scorer with per-factor attribution | tripathidhruv | `[ ]` |
-| 1.8 | A* search over capability state, admissible heuristic | tripathidhruv | `[ ]` |
-| 1.9 | K-best enumeration with hop cap and deduplication | tripathidhruv | `[ ]` |
-| 1.10 | Result persistence — paths, hops, factors, rejections | tripathidhruv | `[ ]` |
-| 1.11 | FastAPI application, settings, health endpoint | netrajs | `[ ]` |
-| 1.12 | Graph endpoints — nodes, edges, search, stats, saved queries | netrajs | `[ ]` |
+| 1.1 | Synthetic generator — nodes and edges into Neo4j | swamini1662 | `[~]` |
+| 1.2 | Generator — planted scenarios, intent-only manifest | swamini1662 | `[~]` |
+| 1.3 | Generator — decoy and twin instances | swamini1662 | `[~]` |
+| 1.4 | CSR snapshot loader from Neo4j, keyed by graph version | tripathidhruv | `[~]` |
+| 1.5 | Capability-state model with dominance pruning | tripathidhruv | `[~]` |
+| 1.6 | Precondition evaluator reading rule rows | tripathidhruv | `[~]` |
+| 1.7 | Log-space scorer with per-factor attribution | tripathidhruv | `[~]` |
+| 1.8 | A* search over capability state, admissible heuristic | tripathidhruv | `[~]` |
+| 1.9 | K-best enumeration with hop cap and deduplication | tripathidhruv | `[~]` |
+| 1.10 | Result persistence — paths, hops, factors, rejections | tripathidhruv | `[~]` |
+| 1.11 | FastAPI application, settings, health endpoint | netrajs | `[x]` |
+| 1.12 | Graph endpoints — nodes, edges, search, stats, saved queries | netrajs | `[x]` |
 | 1.13 | Path endpoints — list, detail, discover, chokepoints | netrajs | `[ ]` |
-| 1.14 | Frontend scaffold — Vite, TypeScript, routing, API client | sanchitaaX | `[ ]` |
-| 1.15 | Design system — tokens from the database, glass surfaces, motion | sanchitaaX | `[ ]` |
+| 1.14 | Frontend scaffold — Vite, TypeScript, routing, API client | sanchitaaX | `[~]` |
+| 1.15 | Design system — tokens from the database, glass surfaces, motion | sanchitaaX | `[~]` |
 | 1.16 | Dashboard screen | sanchitaaX | `[ ]` |
 | 1.17 | Attack Paths screen with hop breakdown and factor panel | sanchitaaX | `[ ]` |
 
@@ -49,7 +49,7 @@ commit their own tasks from their own GitHub account — see `docs/PROGRESS.md` 
 
 | # | Task | Owner | Status |
 |---|---|---|---|
-| 2.1 | Reference oracle — exhaustive DFS, written from the spec alone | swamini1662 | `[ ]` |
+| 2.1 | Reference oracle — exhaustive DFS, written from the spec alone | swamini1662 | `[~]` |
 | 2.2 | Differential test harness, engine against oracle | swamini1662 | `[ ]` |
 | 2.3 | Evaluation harness — precision, recall, F1 at both match levels | swamini1662 | `[ ]` |
 | 2.4 | Ranking metrics — Kendall tau, NDCG@10 | swamini1662 | `[ ]` |
@@ -82,9 +82,9 @@ commit their own tasks from their own GitHub account — see `docs/PROGRESS.md` 
 | 4.1 | Salted append-only log, RFC 6962 leaf and node hashing | netrajs | `[ ]` |
 | 4.2 | Merkle tree, inclusion and consistency proofs | netrajs | `[ ]` |
 | 4.3 | Anchoring service — anvil, base-sepolia, replay | netrajs | `[ ]` |
-| 4.4 | Solidity checkpoint registry and Foundry tests | netrajs | `[ ]` |
+| 4.4 | Solidity checkpoint registry and Foundry tests | netrajs | `[~]` |
 | 4.5 | Differential fuzz — Solidity verifier against Python proofs | netrajs | `[ ]` |
-| 4.6 | EIP-712 approval verification | netrajs | `[ ]` |
+| 4.6 | EIP-712 approval verification | netrajs | `[~]` |
 | 4.7 | Audit endpoints, verification that can report failure | netrajs | `[ ]` |
 | 4.8 | Audit Trail screen with chain state and tamper window | sanchitaaX | `[ ]` |
 

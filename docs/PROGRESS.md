@@ -6,8 +6,8 @@
 
 **Repository:** https://github.com/netrajs/faultline
 **Problem statement:** PS17 — Attack Path & Identity Privilege Graph Analyzer (Expert), cyber + blockchain
-**Current phase:** Phase 0 — Foundations
-**Status:** Both datastores live and schema'd. Rules spec and generator are next.
+**Current phase:** Phase 1 — Vertical slice
+**Status:** Foundations complete and pushed. Five subsystems under parallel construction.
 
 ---
 
@@ -19,13 +19,15 @@
 | Research | 3 of 6 recon reports complete (algorithms, blockchain, validation). 3 cut short by a session limit. |
 | MySQL schema | **Done.** 8 migrations, 62 tables, verified against MySQL 8.0.44. |
 | Neo4j schema | **Done.** 9 constraints, 14 indexes, verified against 5.26.0 Community. |
-| Rules spec | Not started. **Next up** — blocks generator and oracle. |
-| Generator | Not started. |
-| Oracle | Not started. Must be written from the rules spec *before* the fast engine. |
-| Engine | Not started. |
-| API | Not started. |
-| Frontend | Not started. Blocked on graph-viz and glass-library verification. |
-| Contracts | Not started. |
+| Rules spec | **Done.** 15 rules, 14 paired decoys, 10 invariants — `docs/RULES.md`. |
+| Seed data | **Done.** 6 files: vocabularies, attacker model, scoring, fixes, ground truth, UI config. |
+| Core model | **Done.** Shared types and determinism utilities, smoke-tested. |
+| API | **Config and graph routes done.** Path, remediation, audit and validation routes pending. |
+| Generator | In progress. |
+| Oracle | In progress. Written from the spec alone, deliberately blind to the engine. |
+| Engine | In progress. Deliberately blind to the oracle. |
+| Frontend | In progress. Scaffold and design system. |
+| Contracts | In progress. Checkpoint registry and EIP-712 approvals. |
 
 ---
 
@@ -108,6 +110,30 @@ Per-workstream commit budget (≥10 each, natural granularity):
 ## 6. Session log
 
 Append one entry per working session. Keep it short and factual.
+
+### 2026-09-11 — Session 3 (parallel build)
+
+- Seeded the attacker model as data: 9 capability atoms, 13 MITRE-mapped
+  techniques, 15 rules with 38 preconditions and 21 effects, 4 threat models.
+- Seeded the scoring configuration. The display score is a weighted sum of three
+  normalised components with weights totalling 1.0, so the full 0–10 range is
+  attainable — the design this replaced topped out at 4.0 against tiers starting
+  "critical" at 9.0, meaning no path could ever be rated critical.
+- Found and fixed a real defect in the migration runner: the statement splitter
+  split on every semicolon after stripping comments, which cut an INSERT in half
+  when a seeded description contained one in prose. Now a single quote-aware pass.
+- Wrote the shared domain model. A capability is a `(code, node)` pair rather
+  than a scalar level, because a level invites `>=` comparisons that falsely make
+  every high privilege imply every lower one.
+- Wrote the API's configuration and graph routes. Nine endpoints verified against
+  the live databases.
+- Started five parallel workstreams: generator, reference oracle, engine,
+  frontend, contracts. The oracle and engine are explicitly forbidden from
+  reading each other, since their agreement is only evidence of correctness if
+  neither was written from the other.
+- **Team directive:** Higgsfield MCP is available for UI background imagery —
+  deferred to Phase 5 (task 5.6), after the interface works.
+- 13 commits pushed.
 
 ### 2026-09-11 — Session 2 (foundations)
 

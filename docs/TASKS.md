@@ -49,8 +49,8 @@ commit their own tasks from their own GitHub account — see `docs/PROGRESS.md` 
 
 | # | Task | Owner | Status |
 |---|---|---|---|
-| 2.1 | Reference oracle — exhaustive DFS, written from the spec alone | swamini1662 | `[~]` (dispatched, Milestone A Task 1) |
-| 2.2 | Differential test harness, engine against oracle | swamini1662 | `[ ]` |
+| 2.1 | Reference oracle — exhaustive DFS, written from the spec alone | swamini1662 | `[x]` |
+| 2.2 | Differential test harness, engine against oracle | swamini1662 | `[~]` (dispatched: rule-fixes worktree) |
 | 2.3 | Evaluation harness — precision, recall, F1 at both match levels | swamini1662 | `[ ]` |
 | 2.4 | Ranking metrics — Kendall tau, NDCG@10 | swamini1662 | `[ ]` |
 | 2.5 | Calibration — reliability curve, expected calibration error, Brier | swamini1662 | `[ ]` |
@@ -63,30 +63,30 @@ commit their own tasks from their own GitHub account — see `docs/PROGRESS.md` 
 
 | # | Task | Owner | Status |
 |---|---|---|---|
-| 3.1 | Copy-on-write mutation overlay | tripathidhruv | `[ ]` |
-| 3.2 | Simulation by full re-derivation, both-direction delta | tripathidhruv | `[ ]` |
+| 3.1 | Copy-on-write mutation overlay | tripathidhruv | `[~]` (dispatched: remediation worktree) |
+| 3.2 | Simulation by full re-derivation, both-direction delta | tripathidhruv | `[~]` (dispatched: remediation worktree) |
 | 3.3 | Dinic max-flow, node-split minimum vertex cut | tripathidhruv | `[ ]` |
-| 3.4 | Greedy set-cover chokepoints with optimality bound | tripathidhruv | `[ ]` |
-| 3.5 | Blast radius, probability-weighted by reach | tripathidhruv | `[~]` (dispatched, own worktree) |
+| 3.4 | Greedy set-cover chokepoints with optimality bound | tripathidhruv | `[~]` (dispatched: remediation worktree) |
+| 3.5 | Blast radius, probability-weighted by reach | tripathidhruv | `[~]` (finishing, node-edge tree view) |
 | 3.6 | Recommendation ranking and dependency analysis | tripathidhruv | `[ ]` |
 | 3.7 | Lifecycle service enforcing transitions from the table | netrajs | `[ ]` |
 | 3.8 | Remediation and blast-radius endpoints | netrajs | `[ ]` |
 | 3.9 | Verification — re-derive after apply, compute fidelity | netrajs | `[ ]` |
-| 3.10 | Remediation Center screen with simulation comparison | sanchitaaX | `[ ]` |
+| 3.10 | Remediation Center screen with simulation comparison | sanchitaaX | `[~]` (dispatched: remediation worktree) |
 | 3.11 | Blast Radius screen | sanchitaaX | `[ ]` |
 
 ## Phase 4 — Proof and governance
 
 | # | Task | Owner | Status |
 |---|---|---|---|
-| 4.1 | Salted append-only log, RFC 6962 leaf and node hashing | netrajs | `[ ]` |
+| 4.1 | Salted append-only log, RFC 6962 leaf and node hashing | netrajs | `[~]` (dispatched: audit-trail worktree) |
 | 4.2 | Merkle tree, inclusion and consistency proofs | netrajs | `[ ]` |
 | 4.3 | Anchoring service — anvil, base-sepolia, replay | netrajs | `[ ]` |
 | 4.4 | Solidity checkpoint registry and Foundry tests | netrajs | `[~]` |
 | 4.5 | Differential fuzz — Solidity verifier against Python proofs | netrajs | `[ ]` |
 | 4.6 | EIP-712 approval verification | netrajs | `[~]` |
-| 4.7 | Audit endpoints, verification that can report failure | netrajs | `[ ]` |
-| 4.8 | Audit Trail screen with chain state and tamper window | sanchitaaX | `[ ]` |
+| 4.7 | Audit endpoints, verification that can report failure | netrajs | `[~]` (dispatched: audit-trail worktree) |
+| 4.8 | Audit Trail screen with chain state and tamper window | sanchitaaX | `[~]` (dispatched: audit-trail worktree) |
 
 ## Phase 5 — Narration and polish
 

@@ -19,6 +19,7 @@ from app.core.settings import ConfigError, load_settings
 from app.db import close_all, fetch_one, store_health
 from app.routers import config as config_router
 from app.routers import graph as graph_router
+from app.routers import paths as paths_router
 
 log = logging.getLogger("faultline")
 
@@ -69,6 +70,7 @@ def create_app() -> FastAPI:
 
     app.include_router(config_router.router)
     app.include_router(graph_router.router)
+    app.include_router(paths_router.router)
 
     @app.exception_handler(ConfigError)
     async def config_error_handler(_: Request, exc: ConfigError) -> JSONResponse:

@@ -1,6 +1,14 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
+// Self-hosted, so the type never silently falls back to a system font when
+// no network reaches a font CDN -- 'Inter' in tokens.css was resolving to
+// Segoe UI on every machine without it installed, which was most of them.
+import '@fontsource-variable/inter';
+import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/jetbrains-mono/500.css';
+import '@fontsource/jetbrains-mono/700.css';
+
 import { applyRuntimeTheme } from '@/theme/applyRuntimeTheme';
 import '@/theme/global.css';
 import { App } from './App';

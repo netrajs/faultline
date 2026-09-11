@@ -26,16 +26,16 @@
   /* The field the whole interface sits on, and the surfaces that sit on it.
      Panels are white; insets step *down* into pale sky rather than up into
      grey, which keeps a nested row from muddying the panel around it. */
-  --bg-app: #eef5fd;
+  --bg-app: #dce9f9;
   --bg-card: #ffffff;
-  --bg-panel: rgba(255, 255, 255, 0.74);
+  --bg-panel: rgba(255, 255, 255, 0.58);
   --bg-raised: rgba(2, 132, 199, 0.08);
   --bg-sunken: rgba(226, 239, 252, 0.85);
   --bg-overlay: rgba(15, 34, 60, 0.28);
 
   /* Chrome rails. White, so the frame reads as paper and the sky field shows
      only in the content column between them. */
-  --bg-rail: rgba(255, 255, 255, 0.88);
+  --bg-rail: rgba(255, 255, 255, 0.7);
   --bg-rail-raised: rgba(2, 132, 199, 0.08);
 
   /* Borders. Hairlines only: on a light theme the shadow does the separating,
@@ -83,9 +83,9 @@
      above (which size icon badges) so the two can be tuned independently:
      these read at the scale of the whole window and stay pale enough that
      white panels still separate from the field behind them. */
-  --wash-cyan: rgba(56, 189, 248, 0.3);
-  --wash-purple: rgba(129, 140, 248, 0.16);
-  --wash-rose: rgba(244, 114, 182, 0.08);
+  --wash-cyan: rgba(56, 189, 248, 0.36);
+  --wash-purple: rgba(129, 140, 248, 0.2);
+  --wash-rose: rgba(244, 114, 182, 0.1);
 
   /* A faint measuring grid in the field, for depth under the panels. Quiet
      enough to register as texture rather than as content. */
@@ -140,7 +140,7 @@
   /* Type scale. A step up across the board from the original: the dashboard
      is read at arm's length on a large display, and 13px body with 10px
      labels was the single biggest legibility cost in that scale. */
-  --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Inter Variable', 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'Cascadia Mono', ui-monospace, monospace;
   --text-2xs: 11px;
   --text-xs: 12px;

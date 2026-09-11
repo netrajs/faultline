@@ -4,17 +4,21 @@ import { Outlet, useLocation } from 'react-router-dom';
 
 import { fade } from '@/theme/motion';
 import { Sidebar } from './Sidebar';
+import { StarField } from './StarField';
 import { Topbar } from './Topbar';
 import { StatusBar } from './StatusBar';
 import './Layout.css';
 
 const COLLAPSE_STORAGE_KEY = 'faultline:sidebar-collapsed';
 
+// Collapsed by default -- an explicit stored '0' is the only thing that
+// expands it, so a first-time visitor sees the icon rail rather than the
+// full labeled sidebar.
 function readStoredCollapsed(): boolean {
   try {
-    return window.localStorage.getItem(COLLAPSE_STORAGE_KEY) === '1';
+    return window.localStorage.getItem(COLLAPSE_STORAGE_KEY) !== '0';
   } catch {
-    return false;
+    return true;
   }
 }
 
@@ -36,6 +40,7 @@ export function Layout() {
 
   return (
     <div className="app-shell">
+      <StarField />
       <Sidebar collapsed={collapsed} onToggleCollapsed={toggleCollapsed} />
       <div className={`app-shell__body ${collapsed ? 'app-shell__body--collapsed' : ''}`}>
         <Topbar />

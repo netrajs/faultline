@@ -27,7 +27,6 @@ body {
   font-family: var(--font-sans);
   font-size: var(--text-base);
   line-height: var(--leading-normal);
-  -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   position: relative;
   /* The content field: sky at the top fading to near-white at the bottom,
@@ -40,7 +39,7 @@ body {
     radial-gradient(1100px 640px at 6% -16%, var(--wash-cyan), transparent 62%),
     radial-gradient(900px 620px at 100% -6%, var(--wash-purple), transparent 60%),
     radial-gradient(1100px 700px at 62% 112%, var(--wash-rose), transparent 66%),
-    linear-gradient(180deg, #cde2fa 0%, #e2eefc 42%, var(--bg-app) 78%, #f4f9ff 100%);
+    linear-gradient(180deg, #a9c9f0 0%, #c3daf5 42%, var(--bg-app) 78%, #eaf3fc 100%);
   background-size:
     var(--grid-size) var(--grid-size),
     var(--grid-size) var(--grid-size),

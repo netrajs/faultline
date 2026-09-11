@@ -10,6 +10,12 @@ Plain SQL rather than an ORM migration tool is deliberate. Every table in this
 project is meant to be readable by someone auditing how a risk number was
 produced, and generated DDL is harder to review than DDL somebody wrote.
 
+MySQL executes an implicit commit before and after each DDL statement, so a
+migration that fails partway leaves the statements before the failure in place.
+There is no way around that short of a shadow-schema swap, which is not worth the
+machinery here. The runner reports which statement failed and leaves the
+migration unrecorded, so the fix during development is ``--reset``.
+
 Usage::
 
     python -m db.migrate            apply pending migrations

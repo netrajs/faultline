@@ -344,6 +344,8 @@ class RuleSet:
     atoms: Mapping[str, CapabilityAtom]
     techniques: Mapping[str, Technique]
     threat_models: Mapping[str, ThreatModel]
+    default_threat_model_code: str | None = None
+    """The code of the row flagged ``is_default``, if exactly one row is."""
 
     @property
     def global_capability_codes(self) -> frozenset[str]:
@@ -362,9 +364,18 @@ class RuleSet:
         raise KeyError(rule_id)
 
     def default_threat_model(self) -> ThreatModel:
+        """The threat model an analysis uses when the caller names none.
+
+        ``threat_model.is_default`` decides it. Falling back to the first code
+        alphabetically would silently analyse ``contractor_device`` wherever a
+        caller meant ``external_phish``, and the two do not have the same
+        answer.
+        """
         if not self.threat_models:
             raise RuleDataError("no threat models loaded")
-        return self.threat_models[sorted(self.threat_models)[0]]
+        if self.default_threat_model_code is not None:
+            return self.threat_models[self.default_threat_model_code]
+        raise RuleDataError("no threat model is flagged as the default")
 
 
 def _json_value(raw: Any) -> Any:
@@ -551,8 +562,9 @@ def load_ruleset(source: RowSource, *, include_disabled: bool = False) -> RuleSe
         )
 
     threat_models = {}
-    for code, label, description in source.fetch(
-        "threat_model", ("code", "label", "description")
+    default_codes: list[str] = []
+    for code, label, description, is_default in source.fetch(
+        "threat_model", ("code", "label", "description", "is_default")
     ):
         ordered = sorted(grants.get(code, ()), key=lambda g: g[0])
         threat_models[code] = ThreatModel(
@@ -561,12 +573,19 @@ def load_ruleset(source: RowSource, *, include_disabled: bool = False) -> RuleSe
             description=description,
             grants=tuple((c, k, n) for _, c, k, n in ordered),
         )
+        if bool(is_default):
+            default_codes.append(code)
+    if len(default_codes) > 1:
+        raise RuleDataError(
+            f"more than one threat model is flagged as the default: {sorted(default_codes)}"
+        )
 
     return RuleSet(
         rules=tuple(rules),
         atoms=atoms,
         techniques=techniques,
         threat_models=threat_models,
+        default_threat_model_code=default_codes[0] if default_codes else None,
     )
 
 

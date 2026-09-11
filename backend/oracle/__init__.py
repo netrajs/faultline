@@ -27,19 +27,24 @@ from oracle.preconditions import (
     evaluate_precondition,
     resolve_capability,
 )
-from oracle.reference import (
+from oracle.search import (
+    DEFAULT_MAX_HOPS,
+    OracleBudgetExceeded,
     OracleConfig,
     OracleResult,
     canonical_path_key,
     discover,
+    entry_nodes_for,
     materialise_grants,
     verify_path,
 )
 
 __all__ = [
     "CapabilityAtom",
+    "DEFAULT_MAX_HOPS",
     "MISSING",
     "MySQLRowSource",
+    "OracleBudgetExceeded",
     "OracleConfig",
     "OracleResult",
     "PreconditionOutcome",
@@ -49,6 +54,7 @@ __all__ = [
     "canonical_path_key",
     "describe_capability",
     "discover",
+    "entry_nodes_for",
     "evaluate_precondition",
     "load_ruleset",
     "materialise_grants",

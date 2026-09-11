@@ -61,6 +61,17 @@ p {
   margin: 0;
 }
 
+/* Headings get the display face; body copy stays in the UI face. Two
+   families used for distinct jobs, not one family stretched thin across
+   every role. */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
 a {
   color: inherit;
 }

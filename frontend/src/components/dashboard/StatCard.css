@@ -121,6 +121,7 @@
 }
 
 .stat-card__value {
+  font-family: var(--font-display);
   font-size: var(--text-xl);
   font-weight: 700;
   color: var(--text-primary);

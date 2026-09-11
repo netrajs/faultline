@@ -8,7 +8,7 @@
   /* Frosted: content scrolls underneath it, so this is one of the surfaces
      that earns the blur rather than the neumorphic lift. */
   border-bottom: 1px solid var(--border-subtle);
-  background: rgba(255, 255, 255, 0.56);
+  background: rgba(255, 255, 255, 0.42);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 12px 28px -24px rgba(23, 58, 110, 0.5);

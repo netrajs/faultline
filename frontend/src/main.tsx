@@ -2,9 +2,12 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
 // Self-hosted, so the type never silently falls back to a system font when
-// no network reaches a font CDN -- 'Inter' in tokens.css was resolving to
-// Segoe UI on every machine without it installed, which was most of them.
-import '@fontsource-variable/inter';
+// no network reaches a font CDN. Manrope carries body copy and UI chrome;
+// Space Grotesk (a distinct family, not just a heavier weight of the same
+// one) carries headings and the big numeric displays, so the dashboard has
+// an actual typographic hierarchy instead of one face at different sizes.
+import '@fontsource-variable/manrope';
+import '@fontsource-variable/space-grotesk';
 import '@fontsource/jetbrains-mono/400.css';
 import '@fontsource/jetbrains-mono/500.css';
 import '@fontsource/jetbrains-mono/700.css';

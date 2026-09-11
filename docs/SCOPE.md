@@ -315,6 +315,12 @@ programmatically validated: every entity named in the narrative must appear in t
 Fail the gate → reject and regenerate. Narratives are cached by path content hash. An offline
 template renderer is the fallback so the demo never depends on an API key or wifi.
 
+**Provider: OpenAI, not Anthropic.** `TEAM DIRECTIVE` — switched from the original blueprint's
+Claude API. `Settings.openai_api_key` / `Settings.openai_model` (default `gpt-4o-mini`) replace
+the earlier Anthropic fields; `narration_available` gates on the OpenAI key's presence. The
+hallucination gate and offline fallback above apply unchanged regardless of provider — the gate
+validates generated text against the path object, not against which model produced it.
+
 ### D12 — Two stores, split by shape. Nothing is hardcoded. `TEAM DIRECTIVE`
 
 **Neo4j 5 Community holds the graph. MySQL 8 holds everything else.**
@@ -368,6 +374,32 @@ Two consequences worth planning for:
 **Also DB-resident, not hardcoded:** the demo's Cypher queries themselves. Graph Explorer's saved
 queries — including the naive-reachability one we deliberately show failing — are rows, so the
 demo script is data and can be edited without a rebuild.
+
+### D13 — Combine before you add. Every screen must read cold. `TEAM DIRECTIVE`
+
+The audience for this product is not only security practitioners — a judge, or a teammate seeing
+a screen for the first time, must be able to read it with **zero prior context** about the
+system. Two standing rules follow, binding on every future screen:
+
+1. **When several pieces of the same kind of thing would otherwise stack as separate components,
+   show them together in one view instead.** The Attack Paths detail screen originally rendered
+   one full card per hop — rule text, metrics, capabilities, factor breakdown, over and over — so
+   a six-hop path meant six long cards and no way to compare them at a glance. It is now one flow
+   diagram showing every hop at once, each coloured by its own risk (reusing the exact risk-tier
+   colours already defined for path-level scores, never a second colour scale invented for one
+   screen), plus a single detail panel below that shows whichever hop is selected. The pattern —
+   one compact comparative view for "all N of these together," one shared detail panel for "the
+   one I clicked" — is the default for any future list-of-similar-things screen (blast-radius
+   reached nodes, remediation candidates, audit entries): resist stacking N full cards before
+   asking whether N could be one diagram or one table instead.
+2. **Every screen needs a plain-language legend for anything encoded visually** — a colour scale,
+   an icon, a badge — stated in ordinary words near where it's used (e.g. "redder steps are
+   easier for an attacker to pull off"), not left for the viewer to infer from a legend buried in
+   Settings or not explained at all.
+
+Layout correctness is part of this: chrome that is supposed to always be reachable (the sidebar,
+its collapse toggle) must actually stay fixed to the viewport on every page, including ones tall
+enough to scroll — see the fixed regression this locks in below.
 
 ---
 

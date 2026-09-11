@@ -22,11 +22,11 @@
 | Rules spec | **Done.** 15 rules, 14 paired decoys, 10 invariants — `docs/RULES.md`. |
 | Seed data | **Done.** 6 files: vocabularies, attacker model, scoring, fixes, ground truth, UI config. |
 | Core model | **Done.** Shared types and determinism utilities, smoke-tested. |
-| API | **Config and graph routes done.** Path, remediation, audit and validation routes pending. |
-| Generator | In progress. |
+| API | **Config, graph and path/rejection/chokepoint/risk routes done.** Remediation and audit routes pending. |
+| Generator | **Done for Phase 1.** Facts, planted scenarios, and all 14 decoy/twin pairs; seeded live (graph v1, 691 nodes / 869 edges, 12 scenarios, 28 decoy instances). |
 | Oracle | In progress. Written from the spec alone, deliberately blind to the engine. |
-| Engine | In progress. Deliberately blind to the oracle. |
-| Frontend | In progress. Scaffold and design system. |
+| Engine | In progress, paused mid-implementation. Every module has a first pass (snapshot/rules/preconditions/scoring/search/persistence/discover); 87/92 unit tests passing, 5 failing in the scoring/rules layer, uncommitted. Resume here next. |
+| Frontend | **Done for Phase 1.** App shell, routing, runtime theming from the config API, Dashboard and Attack Paths screens with the hop/factor breakdown, verified against the live backend. |
 | Contracts | In progress. Checkpoint registry and EIP-712 approvals. |
 
 ---
@@ -34,14 +34,19 @@
 ## 2. Immediate next actions, in order
 
 1. ~~MySQL and Neo4j schema.~~ **Done.**
-1. **`rules` specification — prose first.** Write the precondition semantics as English in
-   `docs/RULES.md` before any code. The oracle and the engine are both written from this document,
-   independently. That independence is the whole point.
-2. **Seed the rule/technique/scoring tables** from the spec via migration.
-3. **Generator** emitting primitive facts + manifest + decoy/twin registry into MySQL.
-4. **`oracle/reference.py`** — exhaustive DFS with explicit precondition checks, written from
-   `docs/RULES.md` without looking at the generator's internals.
-5. **Engine vertical slice** — CSR load, A* over capability state, one scored path end to end.
+1. ~~`rules` specification — prose first.~~ **Done** — `docs/RULES.md`.
+2. ~~Seed the rule/technique/scoring tables from the spec via migration.~~ **Done.**
+3. ~~Generator emitting primitive facts + manifest + decoy/twin registry.~~ **Done**, and seeded
+   live — graph v1, 691 nodes / 869 edges, 12 scenarios, 28 decoy instances.
+4. **`oracle/reference.py`** — loader and precondition evaluator are done; the exhaustive-DFS
+   search itself is still open.
+5. **Finish the engine vertical slice.** Every module has a first implementation
+   (`backend/engine/{snapshot,rules,preconditions,scoring,search,persistence,discover}.py`) but it
+   is uncommitted and 5 of 92 unit tests are still failing in the scoring/rules layer — fix those,
+   get `python -m pytest backend/tests/engine -v` fully green, then run
+   `python -m engine.discover --threat-model external_phish` against the live graph so the
+   Dashboard and Attack Paths screens have a real discovery run to render instead of the
+   "no completed discovery run yet" empty state.
 
 ---
 
@@ -110,6 +115,36 @@ Per-workstream commit budget (≥10 each, natural granularity):
 ## 6. Session log
 
 Append one entry per working session. Keep it short and factual.
+
+### 2026-09-11 — Session 4 (generator, frontend, and a UI pass)
+
+- Committed the prior session's uncommitted work first: the reference oracle's loader and
+  precondition evaluator, the RFC 6962 Merkle log, the generator scaffold, a checkpoint-registry
+  test ordering fix, and new remediation-approval contract tests.
+- Built and committed the synthetic generator: primitive graph facts, planted scenarios with an
+  intent-only manifest, and all 14 decoy/twin pairs from `docs/RULES.md` §5, isolated from
+  background data so a later generator change can't shift a decoy's deciding attribute. 23/23
+  tests passing, deterministic (same seed -> identical graph hash).
+- Built and committed the frontend application: app shell with the sidebar/topbar/statusbar
+  chrome, routing, a typed API layer, runtime theming sourced from the config API (no hardcoded
+  domain colors), and the Dashboard and Attack Paths screens including a per-hop "why this score"
+  factor waterfall. Verified in-browser against the live backend, both populated-graph and
+  no-discovery-run states.
+- Seeded the live databases from the new generator — graph v1, 691 nodes, 869 edges, 12 planted
+  scenarios, 28 decoy instances.
+- Restyled the glass surfaces toward a lighter, more translucent "liquid glass" look per team
+  direction: lighter near-white panel tints at low alpha (letting the backdrop blur carry the
+  color instead of a baked-in dark tint), a darker app background, and a stronger blur/saturation
+  and specular top-edge highlight.
+- Started the engine (CSR loader, independent rule/precondition evaluator, log-space scorer,
+  best-first search with dominance pruning, persistence, `engine.discover` CLI) in parallel, then
+  paused it mid-implementation to prioritize the UI pass above — 87/92 unit tests passing,
+  uncommitted. Picking this back up is the next session's first job (see §2).
+- **Team directive reaffirmed:** no AI attribution anywhere in the repository, and no commit
+  history fabricated under a teammate's identity for work they did not do — including from a
+  contributor's own alternate accounts, since the concern is the fabricated signal itself
+  (a contribution graph misrepresenting when and by whom code was actually written), not only who
+  reads it.
 
 ### 2026-09-11 — Session 3 (parallel build)
 

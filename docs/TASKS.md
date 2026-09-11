@@ -27,9 +27,9 @@ commit their own tasks from their own GitHub account — see `docs/PROGRESS.md` 
 
 | # | Task | Owner | Status |
 |---|---|---|---|
-| 1.1 | Synthetic generator — nodes and edges into Neo4j | swamini1662 | `[~]` |
-| 1.2 | Generator — planted scenarios, intent-only manifest | swamini1662 | `[~]` |
-| 1.3 | Generator — decoy and twin instances | swamini1662 | `[~]` |
+| 1.1 | Synthetic generator — nodes and edges into Neo4j | swamini1662 | `[x]` |
+| 1.2 | Generator — planted scenarios, intent-only manifest | swamini1662 | `[x]` |
+| 1.3 | Generator — decoy and twin instances | swamini1662 | `[x]` |
 | 1.4 | CSR snapshot loader from Neo4j, keyed by graph version | tripathidhruv | `[~]` |
 | 1.5 | Capability-state model with dominance pruning | tripathidhruv | `[~]` |
 | 1.6 | Precondition evaluator reading rule rows | tripathidhruv | `[~]` |
@@ -39,11 +39,11 @@ commit their own tasks from their own GitHub account — see `docs/PROGRESS.md` 
 | 1.10 | Result persistence — paths, hops, factors, rejections | tripathidhruv | `[~]` |
 | 1.11 | FastAPI application, settings, health endpoint | netrajs | `[x]` |
 | 1.12 | Graph endpoints — nodes, edges, search, stats, saved queries | netrajs | `[x]` |
-| 1.13 | Path endpoints — list, detail, discover, chokepoints | netrajs | `[ ]` |
-| 1.14 | Frontend scaffold — Vite, TypeScript, routing, API client | sanchitaaX | `[~]` |
-| 1.15 | Design system — tokens from the database, glass surfaces, motion | sanchitaaX | `[~]` |
-| 1.16 | Dashboard screen | sanchitaaX | `[ ]` |
-| 1.17 | Attack Paths screen with hop breakdown and factor panel | sanchitaaX | `[ ]` |
+| 1.13 | Path endpoints — list, detail, discover, chokepoints | netrajs | `[x]` |
+| 1.14 | Frontend scaffold — Vite, TypeScript, routing, API client | sanchitaaX | `[x]` |
+| 1.15 | Design system — tokens from the database, glass surfaces, motion | sanchitaaX | `[x]` |
+| 1.16 | Dashboard screen | sanchitaaX | `[x]` |
+| 1.17 | Attack Paths screen with hop breakdown and factor panel | sanchitaaX | `[x]` |
 
 ## Phase 2 — Correctness
 

@@ -67,13 +67,13 @@ commit their own tasks from their own GitHub account — see `docs/PROGRESS.md` 
 | 3.2 | Simulation by full re-derivation, both-direction delta | tripathidhruv | `[~]` (dispatched: remediation worktree) |
 | 3.3 | Dinic max-flow, node-split minimum vertex cut | tripathidhruv | `[ ]` |
 | 3.4 | Greedy set-cover chokepoints with optimality bound | tripathidhruv | `[~]` (dispatched: remediation worktree) |
-| 3.5 | Blast radius, probability-weighted by reach | tripathidhruv | `[~]` (finishing, node-edge tree view) |
+| 3.5 | Blast radius, probability-weighted by reach | tripathidhruv | `[x]` |
 | 3.6 | Recommendation ranking and dependency analysis | tripathidhruv | `[ ]` |
 | 3.7 | Lifecycle service enforcing transitions from the table | netrajs | `[ ]` |
 | 3.8 | Remediation and blast-radius endpoints | netrajs | `[ ]` |
 | 3.9 | Verification — re-derive after apply, compute fidelity | netrajs | `[ ]` |
 | 3.10 | Remediation Center screen with simulation comparison | sanchitaaX | `[~]` (dispatched: remediation worktree) |
-| 3.11 | Blast Radius screen | sanchitaaX | `[ ]` |
+| 3.11 | Blast Radius screen | sanchitaaX | `[x]` |
 
 ## Phase 4 — Proof and governance
 

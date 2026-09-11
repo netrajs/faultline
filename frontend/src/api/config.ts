@@ -40,3 +40,19 @@ export function useRiskTierMap(): Map<string, RiskTierConfig> {
   for (const tier of data ?? []) map.set(tier.code, tier);
   return map;
 }
+
+/**
+ * Which configured tier a 0-10 score falls into, sorted so overlapping or
+ * gapped bands never crash a lookup: highest min_score first, so a score
+ * matches the most specific (highest-floor) band it clears.
+ *
+ * Used to colour anything scored on this scale by the SAME bands and
+ * colours as RiskTierBadge -- e.g. a single hop's own success probability,
+ * shown on the path diagram so every hop's risk is visible at a glance
+ * without opening its detail panel -- rather than inventing a second colour
+ * scale for one more place in the UI.
+ */
+export function tierCodeForScore(score: number, tiers: RiskTierConfig[]): string | undefined {
+  const sorted = [...tiers].sort((a, b) => b.min_score - a.min_score);
+  return sorted.find((tier) => score >= tier.min_score)?.code;
+}

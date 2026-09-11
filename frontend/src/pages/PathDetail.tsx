@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { ApiError } from '@/api/client';
@@ -7,6 +8,7 @@ import { Icon } from '@/components/ui/Icon';
 import { RiskTierBadge } from '@/components/ui/RiskTierBadge';
 import { EmptyState, ErrorState, LoadingState } from '@/components/ui/StateViews';
 import { HopCard } from '@/components/paths/HopCard';
+import { PathFlowDiagram } from '@/components/paths/PathFlowDiagram';
 import { formatPercent, formatScore, isTruthy, shortId } from '@/lib/format';
 import { fadeInUp } from '@/theme/motion';
 import './PathDetail.css';
@@ -15,6 +17,9 @@ export function PathDetail() {
   const { pathId } = useParams<{ pathId: string }>();
   const detail = usePathDetail(pathId);
   const nodes = usePathNodes(pathId);
+  // Defaults to the weakest link -- the hop that did the most to shape this
+  // path's risk score is the one worth reading first.
+  const [selectedHopNo, setSelectedHopNo] = useState<number | null>(null);
 
   if (detail.isLoading) {
     return (
@@ -54,6 +59,9 @@ export function PathDetail() {
   const nodeLabel = (nodeId: string) => labelLookup.get(nodeId);
   const sourceLabel = nodeLabel(data.path.source_node_id)?.display_name ?? nodeLabel(data.path.source_node_id)?.name;
   const targetLabel = nodeLabel(data.path.target_node_id)?.display_name ?? nodeLabel(data.path.target_node_id)?.name;
+
+  const activeHopNo = selectedHopNo ?? data.path.bottleneck_hop ?? data.hops[0]?.hop_no ?? 1;
+  const activeHop = data.hops.find((hop) => hop.hop_no === activeHopNo) ?? data.hops[0];
 
   return (
     <div className="path-detail">
@@ -115,11 +123,22 @@ export function PathDetail() {
         </p>
       </GlassPanel>
 
-      <div className="path-detail__hops">
-        {data.hops.map((hop, index) => (
-          <HopCard key={hop.hop_no} hop={hop} nodeLabel={nodeLabel} delay={index * 0.05} />
-        ))}
-      </div>
+      <section className="path-detail__flow" aria-label="Attack path diagram">
+        <h2 className="path-detail__section-title">How the attacker gets there</h2>
+        <p className="path-detail__section-hint">
+          Every step this path takes, in order. Redder steps are easier for an attacker to pull
+          off; bluer steps are harder. Click any step to see exactly how it works, below.
+        </p>
+        <PathFlowDiagram
+          hops={data.hops}
+          nodeLabel={nodeLabel}
+          targetIsCrownJewel={isTruthy(data.path.target_is_crown_jewel)}
+          selectedHopNo={activeHopNo}
+          onSelectHop={setSelectedHopNo}
+        />
+      </section>
+
+      {activeHop && <HopCard hop={activeHop} nodeLabel={nodeLabel} />}
     </div>
   );
 }

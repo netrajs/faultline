@@ -1,0 +1,120 @@
+.path-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-1);
+  padding: var(--space-4);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.path-flow__segment {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.path-flow__node {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass-strong);
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+
+.path-flow__node-label {
+  max-width: 14ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.path-flow__node-crown {
+  color: #d97706;
+  flex-shrink: 0;
+}
+
+.path-flow__transition {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--space-2) var(--space-2) var(--space-1);
+  border: none;
+  border-top: 3px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  color: var(--text-secondary);
+  transition: filter 160ms ease, transform 160ms ease;
+}
+
+/* The coloured top border is always on -- it's how every hop's risk reads at
+   a glance without clicking. Hover/active only need to say "you can act on
+   this one," so they brighten and lift rather than introducing a second,
+   competing colour. */
+.path-flow__transition:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.path-flow__transition--active {
+  filter: brightness(1.15);
+  box-shadow: 0 2px 8px -4px rgba(23, 58, 110, 0.35);
+}
+
+.path-flow__transition-line {
+  display: flex;
+  color: var(--text-muted);
+}
+
+.path-flow__transition-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.3;
+  max-width: 12ch;
+}
+
+.path-flow__transition-prob {
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+@media (max-width: 560px) {
+  .path-flow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .path-flow__segment {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .path-flow__transition {
+    flex-direction: row;
+    align-self: flex-start;
+    margin-left: var(--space-4);
+  }
+
+  .path-flow__transition-line {
+    transform: rotate(90deg);
+  }
+
+  .path-flow__transition-label {
+    align-items: flex-start;
+    text-align: left;
+  }
+}

@@ -233,6 +233,72 @@ export interface TopRisk {
 }
 
 // ---------------------------------------------------------------------------
+// /api/blast-radius
+// ---------------------------------------------------------------------------
+
+/**
+ * Outbound is what control of the origin leads to; inbound is what could lead
+ * to the origin, computed by the backend over the same graph with every edge
+ * reversed; both merges the two, keeping whichever witness is more probable.
+ */
+export type BlastDirection = 'outbound' | 'inbound' | 'both';
+
+export interface BlastRadiusOrigin {
+  node_id: string;
+  kind: string;
+  name: string;
+  display_name: string | null;
+  is_crown_jewel: IntBool;
+  criticality_code: string | null;
+}
+
+export interface BlastReachedNode {
+  node_id: string;
+  kind: string | null;
+  name: string;
+  /** Hop count of the witness chain that produced p_reach -- the two describe the same route. */
+  depth: number;
+  /** Product of the per-hop success probabilities along that chain. */
+  p_reach: number;
+  is_crown_jewel: IntBool;
+  witness_path_id: string | null;
+}
+
+export interface BlastDepthCount {
+  depth: number;
+  count: number;
+}
+
+export interface BlastRadiusRequest {
+  origin_node_id: string;
+  direction: BlastDirection;
+  max_depth: number;
+}
+
+export interface BlastRadiusResponse {
+  blast_run_id: number;
+  analysis_run_id: number;
+  graph_version_id: number;
+  scoring_version: string;
+  origin_node_id: string;
+  direction: BlastDirection;
+  max_depth: number;
+  nodes_reached: number;
+  crown_jewels_reached: number;
+  /** 0-10 risk score of the most damaging thing reachable, on the same scale as a path's. */
+  severity_score: number | null;
+  severity_tier_code: string | null;
+  by_depth: BlastDepthCount[];
+  origin: BlastRadiusOrigin | null;
+  items: BlastReachedNode[];
+  /** Present on a freshly computed run; null when read back from storage. */
+  duration_ms: number | null;
+  expansions: number | null;
+  truncated: boolean;
+  created_at?: string | null;
+}
+
+// ---------------------------------------------------------------------------
 // /api/config/*
 // ---------------------------------------------------------------------------
 

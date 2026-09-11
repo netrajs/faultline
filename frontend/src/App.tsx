@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { IntroSplash } from '@/components/intro/IntroSplash';
 import { Layout } from '@/components/layout/Layout';
 import { AttackPaths } from '@/pages/AttackPaths';
+import { BlastRadius } from '@/pages/BlastRadius';
 import { Dashboard } from '@/pages/Dashboard';
 import { GraphExplorer } from '@/pages/GraphExplorer';
 import { NotFound } from '@/pages/NotFound';
@@ -81,6 +82,9 @@ export function App() {
               <Route path="paths" element={<AttackPaths />} />
               <Route path="paths/:pathId" element={<PathDetail />} />
               <Route path="graph" element={<GraphExplorer />} />
+              {/* Path fixed by the nav row seeded in app_config, so the sidebar
+                  link and the router agree without either hardcoding the other. */}
+              <Route path="blast" element={<BlastRadius />} />
               <Route path="settings" element={<Settings />} />
               <Route path="*" element={<NotFound />} />
             </Route>

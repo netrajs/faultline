@@ -78,7 +78,8 @@ class Settings:
     neo4j_user: str
     neo4j_password: str
     neo4j_database: str
-    anthropic_api_key: str
+    openai_api_key: str
+    openai_model: str
     anchor_mode: str
     anchor_rpc_url: str
     anchor_contract_address: str
@@ -93,7 +94,7 @@ class Settings:
     @property
     def narration_available(self) -> bool:
         """Whether live narration is possible, or the offline renderer is used."""
-        return bool(self.anthropic_api_key)
+        return bool(self.openai_api_key)
 
 
 @lru_cache(maxsize=1)
@@ -123,7 +124,8 @@ def load_settings() -> Settings:
         neo4j_user=_required("NEO4J_USER"),
         neo4j_password=os.environ.get("NEO4J_PASSWORD", ""),
         neo4j_database=_optional("NEO4J_DATABASE", "neo4j"),
-        anthropic_api_key=_optional("ANTHROPIC_API_KEY"),
+        openai_api_key=_optional("OPENAI_API_KEY"),
+        openai_model=_optional("OPENAI_MODEL", "gpt-4o-mini"),
         anchor_mode=anchor_mode,
         anchor_rpc_url=_optional("ANCHOR_RPC_URL"),
         anchor_contract_address=_optional("ANCHOR_CONTRACT_ADDRESS"),

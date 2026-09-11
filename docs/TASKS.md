@@ -49,7 +49,7 @@ commit their own tasks from their own GitHub account — see `docs/PROGRESS.md` 
 
 | # | Task | Owner | Status |
 |---|---|---|---|
-| 2.1 | Reference oracle — exhaustive DFS, written from the spec alone | swamini1662 | `[~]` |
+| 2.1 | Reference oracle — exhaustive DFS, written from the spec alone | swamini1662 | `[~]` (dispatched, Milestone A Task 1) |
 | 2.2 | Differential test harness, engine against oracle | swamini1662 | `[ ]` |
 | 2.3 | Evaluation harness — precision, recall, F1 at both match levels | swamini1662 | `[ ]` |
 | 2.4 | Ranking metrics — Kendall tau, NDCG@10 | swamini1662 | `[ ]` |
@@ -96,7 +96,7 @@ commit their own tasks from their own GitHub account — see `docs/PROGRESS.md` 
 | 5.2 | Hallucination gate — reject any entity absent from the path object | netrajs | `[ ]` |
 | 5.3 | Offline template renderer fallback | netrajs | `[ ]` |
 | 5.4 | Narration cache keyed by path content hash | netrajs | `[ ]` |
-| 5.5 | Settings screen — scoring weights, threat model, regeneration | sanchitaaX | `[ ]` |
+| 5.5 | Settings screen — scoring weights, threat model, regeneration | sanchitaaX / netrajs | `[~]` (dispatched, own worktree) |
 | 5.6 | Background visuals and motion pass | sanchitaaX | `[ ]` |
 | 5.7 | Demo reset endpoint and canonical baseline | netrajs | `[ ]` |
 | 5.8 | Guided demo mode driven by the demo_step table | sanchitaaX | `[ ]` |

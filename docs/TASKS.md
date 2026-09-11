@@ -30,13 +30,13 @@ commit their own tasks from their own GitHub account — see `docs/PROGRESS.md` 
 | 1.1 | Synthetic generator — nodes and edges into Neo4j | swamini1662 | `[x]` |
 | 1.2 | Generator — planted scenarios, intent-only manifest | swamini1662 | `[x]` |
 | 1.3 | Generator — decoy and twin instances | swamini1662 | `[x]` |
-| 1.4 | CSR snapshot loader from Neo4j, keyed by graph version | tripathidhruv | `[~]` |
-| 1.5 | Capability-state model with dominance pruning | tripathidhruv | `[~]` |
-| 1.6 | Precondition evaluator reading rule rows | tripathidhruv | `[~]` |
-| 1.7 | Log-space scorer with per-factor attribution | tripathidhruv | `[~]` |
-| 1.8 | A* search over capability state, admissible heuristic | tripathidhruv | `[~]` |
-| 1.9 | K-best enumeration with hop cap and deduplication | tripathidhruv | `[~]` |
-| 1.10 | Result persistence — paths, hops, factors, rejections | tripathidhruv | `[~]` |
+| 1.4 | CSR snapshot loader from Neo4j, keyed by graph version | tripathidhruv | `[x]` |
+| 1.5 | Capability-state model with dominance pruning | tripathidhruv | `[x]` |
+| 1.6 | Precondition evaluator reading rule rows | tripathidhruv | `[x]` |
+| 1.7 | Log-space scorer with per-factor attribution | tripathidhruv | `[x]` |
+| 1.8 | A* search over capability state, admissible heuristic | tripathidhruv | `[x]` |
+| 1.9 | K-best enumeration with hop cap and deduplication | tripathidhruv | `[x]` |
+| 1.10 | Result persistence — paths, hops, factors, rejections | tripathidhruv | `[x]` |
 | 1.11 | FastAPI application, settings, health endpoint | netrajs | `[x]` |
 | 1.12 | Graph endpoints — nodes, edges, search, stats, saved queries | netrajs | `[x]` |
 | 1.13 | Path endpoints — list, detail, discover, chokepoints | netrajs | `[x]` |

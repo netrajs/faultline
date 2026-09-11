@@ -25,8 +25,8 @@
 | API | **Config, graph and path/rejection/chokepoint/risk routes done.** Remediation and audit routes pending. |
 | Generator | **Done for Phase 1.** Facts, planted scenarios, and all 14 decoy/twin pairs; seeded live (graph v1, 691 nodes / 869 edges, 12 scenarios, 28 decoy instances). |
 | Oracle | In progress. Written from the spec alone, deliberately blind to the engine. |
-| Engine | In progress, paused mid-implementation. Every module has a first pass (snapshot/rules/preconditions/scoring/search/persistence/discover); 87/92 unit tests passing, 5 failing in the scoring/rules layer, uncommitted. Resume here next. |
-| Frontend | **Done for Phase 1.** App shell, routing, runtime theming from the config API, Dashboard and Attack Paths screens with the hop/factor breakdown, verified against the live backend. |
+| Engine | **Done for Phase 1.** Independent rule loader/precondition evaluator, log-space scorer, best-first search with dominance pruning and K-best enumeration, result persistence, `engine.discover` CLI. 146/146 backend tests passing. Two real bugs found only by running discovery against the live graph rather than unit tests alone — top-k was capped per entry instead of per target across the run, and the expansion budget was a shared first-come pool that let one privileged user's search starve every other entry — both fixed. Live runs completed: `external_phish` (160 entries, 11 paths, 1617 rejected, truncated at the expansion cap) and `public_only` (101 entries, 4 paths, 1066 rejected, finished without truncation). |
+| Frontend | **Done for Phase 1, plus Graph Explorer.** App shell, routing, runtime theming from the config API, Dashboard and Attack Paths screens with the hop/factor breakdown, and a real Graph Explorer (live stats, searchable node browser, node detail, saved queries, and the naive-reachability-vs-engine contrast panel). A light/sky-blue visual redesign is in progress per team direction. |
 | Contracts | In progress. Checkpoint registry and EIP-712 approvals. |
 
 ---
@@ -39,14 +39,15 @@
 3. ~~Generator emitting primitive facts + manifest + decoy/twin registry.~~ **Done**, and seeded
    live — graph v1, 691 nodes / 869 edges, 12 scenarios, 28 decoy instances.
 4. **`oracle/reference.py`** — loader and precondition evaluator are done; the exhaustive-DFS
-   search itself is still open.
-5. **Finish the engine vertical slice.** Every module has a first implementation
-   (`backend/engine/{snapshot,rules,preconditions,scoring,search,persistence,discover}.py`) but it
-   is uncommitted and 5 of 92 unit tests are still failing in the scoring/rules layer — fix those,
-   get `python -m pytest backend/tests/engine -v` fully green, then run
-   `python -m engine.discover --threat-model external_phish` against the live graph so the
-   Dashboard and Attack Paths screens have a real discovery run to render instead of the
-   "no completed discovery run yet" empty state.
+   search itself is still open. This is the differential-testing partner for the engine below —
+   both must reach the same conclusions independently, or their agreement means nothing.
+5. ~~Finish the engine vertical slice.~~ **Done.** `backend/engine/` is complete (snapshot load,
+   independent rule/precondition evaluator, log-space scoring, best-first search with dominance
+   pruning, persistence, `engine.discover` CLI), 146/146 backend tests passing, and two live
+   discovery runs are already sitting in the database (`external_phish`, `public_only`).
+6. **Next up:** finish the oracle's exhaustive DFS and differential-test it against the engine on
+   small graphs (Phase 2, docs/TASKS.md 2.1-2.2); then the eval harness (precision/recall/NDCG/
+   calibration) against the ground-truth manifest the generator already writes.
 
 ---
 

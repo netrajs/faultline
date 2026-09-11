@@ -1,0 +1,70 @@
+.intro-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #030509;
+  cursor: pointer;
+  opacity: 1;
+  transform: scale(1);
+  /* Duration matches EXIT_MS in IntroSplash.tsx exactly -- see the comment there. */
+  transition: opacity 900ms cubic-bezier(0.16, 1, 0.3, 1), transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.intro-splash--exiting {
+  opacity: 0;
+  transform: scale(1.18);
+  pointer-events: none;
+}
+
+.intro-splash__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* A faint vignette so the skip button and edges never sit on a pure-white
+   frame of the source video. */
+.intro-splash__scrim {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 120% at 50% 50%, transparent 45%, rgba(2, 5, 12, 0.4) 100%);
+  pointer-events: none;
+}
+
+.intro-splash__skip {
+  position: absolute;
+  right: var(--space-6);
+  bottom: var(--space-6);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #ffffff;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.intro-splash__skip:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-splash,
+  .intro-splash--exiting {
+    transition-duration: 1ms;
+  }
+}

@@ -2,6 +2,27 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
+  position: relative;
+}
+
+/* A light echo of the intro video's cyan network-graph motif, sitting behind
+   the cards -- visible in the gaps between panels and faintly through the
+   frosted glass over them, tying the dashboard back to the intro without
+   repeating it. A generated SVG, not a photo/video asset: no external
+   generation credits were available, and a static vector costs nothing to
+   render or ship. */
+.dashboard::before {
+  content: '';
+  position: absolute;
+  inset: -32px -24px auto -24px;
+  height: 640px;
+  background-image: url('/media/network-field-light.svg');
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .dashboard__stats {

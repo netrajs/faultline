@@ -50,6 +50,8 @@ desktop.ini
 
 # ── Local working artifacts ──
 .claude/
+.worktrees/
+.superpowers/
 scratch/
 tmp/
 *.log

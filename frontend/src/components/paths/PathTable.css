@@ -6,14 +6,17 @@
 .path-table__head,
 .path-table__row {
   display: grid;
-  grid-template-columns: 32px minmax(0, 2fr) 60px 100px 130px 70px 90px 70px;
+  grid-template-columns: 34px minmax(0, 2fr) 64px 104px 138px 76px 96px 76px;
   align-items: center;
   gap: var(--space-3);
 }
 
 .path-table__head {
-  padding: 0 var(--space-4) var(--space-2);
+  padding: 0 var(--space-4) var(--space-3);
+  margin-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border-subtle);
   font-size: var(--text-2xs);
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
   color: var(--text-muted);
@@ -37,7 +40,7 @@
 
 .path-table__row:hover {
   background: var(--bg-raised);
-  border-color: var(--border-glass-strong);
+  border-color: var(--accent-cyan-line);
   transform: translateX(2px);
 }
 
@@ -73,7 +76,13 @@
 }
 
 .path-table__crown {
-  color: #f59e0b;
+  color: var(--accent-amber);
+}
+
+/* The tier column is a fixed track, so the badge would otherwise stretch to
+   fill it and stop reading as a pill. */
+.path-table__row > .risk-tier-badge {
+  justify-self: start;
 }
 
 .path-table__cell {

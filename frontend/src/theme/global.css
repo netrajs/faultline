@@ -13,6 +13,13 @@ body,
   height: 100%;
 }
 
+/* The palette is light, so tell the engine as much: native controls
+   (checkboxes, selects, scrollbars) otherwise render in the operating
+   system's dark form styling and sit on the page as black blocks. */
+html {
+  color-scheme: light;
+}
+
 body {
   margin: 0;
   background: var(--bg-app);
@@ -23,38 +30,28 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   position: relative;
-  /* A radial wash behind the glass chrome -- the ambient backdrop the glass
-     surfaces are meant to sit on top of. The panels are translucent enough
-     now (see --bg-panel/--bg-card) that this wash reads clearly through
-     them, so it carries most of the app's color rather than the panels
-     themselves -- restrained per tokens.css, never a flat solid tint. */
+  /* The content field: sky at the top fading to near-white at the bottom,
+     with two well-separated blooms for depth and a very faint measuring grid
+     for texture. White panels sit on this, so it stays pale enough that the
+     panel edges read without needing a heavy border. */
   background-image:
-    radial-gradient(1300px 750px at 10% -12%, var(--wash-cyan), transparent 62%),
-    radial-gradient(1100px 800px at 102% 2%, var(--wash-purple), transparent 58%),
-    radial-gradient(900px 650px at 50% 112%, var(--wash-rose), transparent 68%);
-  background-repeat: no-repeat;
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+    radial-gradient(1100px 640px at 6% -16%, var(--wash-cyan), transparent 62%),
+    radial-gradient(900px 620px at 100% -6%, var(--wash-purple), transparent 60%),
+    radial-gradient(1100px 700px at 62% 112%, var(--wash-rose), transparent 66%),
+    linear-gradient(180deg, #cde2fa 0%, #e2eefc 42%, var(--bg-app) 78%, #f4f9ff 100%);
+  background-size:
+    var(--grid-size) var(--grid-size),
+    var(--grid-size) var(--grid-size),
+    auto, auto, auto, auto;
+  background-repeat: repeat, repeat, no-repeat, no-repeat, no-repeat, no-repeat;
   background-attachment: fixed;
 }
 
 #root {
   position: relative;
   z-index: 1;
-}
-
-/* A faint grain over the wash so large blurred gradients read as glass
-   catching light rather than a flat digital vignette -- the texture real
-   frosted glass has that a pure gradient never does. Fixed and behind
-   everything; SVG turbulence rather than an image asset, so it costs
-   nothing to ship or load. */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.035;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 h1,
@@ -89,7 +86,7 @@ ol {
 }
 
 ::selection {
-  background: var(--accent-cyan-soft);
+  background: rgba(56, 189, 248, 0.32);
   color: var(--text-primary);
 }
 
@@ -109,38 +106,34 @@ ol {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: var(--border-glass-strong);
+  background-color: rgba(19, 62, 122, 0.22);
   border-radius: var(--radius-pill);
   border: 2px solid transparent;
   background-clip: padding-box;
 }
 
-/* Shared glass-surface primitive. Every panel, card and dropdown in the app
-   composes this rather than redeclaring backdrop-filter and border colour. */
+*::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(19, 62, 122, 0.34);
+}
+
+/* Shared surface primitive. Every panel, card and dropdown in the app
+   composes this rather than redeclaring its elevation and border colour.
+   White, lifted off the sky field by diffuse ambient shadow: the hairline
+   border is there only to define the edge where the shadow is weakest. */
 .glass-surface {
-  background: var(--bg-panel);
+  background: var(--bg-card);
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-lg);
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   box-shadow: var(--shadow-panel);
   position: relative;
 }
 
-/* A single hairline highlight along the top edge, the way light would catch
-   real glass. Kept to one pseudo-element so it stays cheap to composite. */
-.glass-surface::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(180deg, var(--glass-highlight), transparent 40%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
+/* The frosted treatment -- a translucent surface over a real backdrop blur,
+   with a bright rim along the top edge where light catches glass -- is
+   deliberately not part of this primitive. It belongs to the three surfaces
+   that genuinely float over moving content, and each declares it where it is
+   defined: the sidebar rail, the topbar and the dashboard hero. Applying it
+   to every panel is what costs a light theme its contrast. */
 
 /* Shared call-to-action used inside empty/error states and similar chrome. */
 .pill-button {
@@ -149,30 +142,35 @@ ol {
   gap: var(--space-2);
   padding: var(--space-2) var(--space-5);
   border-radius: var(--radius-pill);
-  border: 1px solid var(--border-glass-strong);
-  background: var(--bg-raised);
+  border: 1px solid var(--border-glass);
+  background: var(--bg-card);
   color: var(--text-primary);
   font-size: var(--text-sm);
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard), transform var(--duration-fast) var(--ease-standard);
+  box-shadow: var(--shadow-ambient);
+  transition: background-color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard), transform var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard);
 }
 
 .pill-button:hover {
   background: var(--accent-cyan-soft);
-  border-color: var(--accent-cyan);
+  border-color: var(--accent-cyan-line);
+  color: var(--accent-cyan);
+  box-shadow: 0 8px 18px -12px rgba(23, 58, 110, 0.4);
   transform: translateY(-1px);
 }
 
 .pill-button--primary {
-  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  background: var(--gradient-brand);
   border-color: transparent;
   color: var(--text-inverse);
+  box-shadow: 0 8px 20px -10px rgba(56, 189, 248, 0.9);
 }
 
 .pill-button--primary:hover {
-  filter: brightness(1.08);
+  filter: brightness(1.04);
+  color: var(--text-inverse);
   transform: translateY(-1px);
 }
 

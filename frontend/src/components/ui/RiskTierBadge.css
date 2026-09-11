@@ -1,14 +1,28 @@
+/*
+ * Colour is supplied inline from the config-driven custom properties, and it
+ * stays that way: the fill, the rim and the dot are all the tier's own colour
+ * straight from the API.
+ *
+ * The label text is the one exception. Several of the seeded tiers are
+ * mid-value yellows and ambers, which are perfectly legible as a solid dot or
+ * a 1px rim on white but drop to around 2:1 as 11px type on a pale tint of
+ * themselves. So the shape carries the colour and the text is set in the body
+ * ink -- the same information, read at a glance instead of squinted at. This
+ * overrides the inline colour, hence the !important.
+ */
 .risk-tier-badge {
+  color: var(--text-primary) !important;
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  padding: 3px var(--space-3);
+  padding: 3px var(--space-3) 3px var(--space-2);
   border-radius: var(--radius-pill);
   border: 1px solid;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
   white-space: nowrap;
+  line-height: 1.5;
 }
 
 .risk-tier-badge--md {
@@ -16,13 +30,13 @@
 }
 
 .risk-tier-badge--sm {
-  font-size: 9px;
+  font-size: 10px;
   padding: 2px var(--space-2);
 }
 
 .risk-tier-badge__dot {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   flex-shrink: 0;
 }

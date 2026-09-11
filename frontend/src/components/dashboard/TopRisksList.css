@@ -6,9 +6,9 @@
 
 .top-risks__row {
   display: grid;
-  grid-template-columns: 24px 1fr auto auto auto auto;
+  grid-template-columns: 22px minmax(0, 1fr) auto auto auto auto;
   align-items: center;
-  gap: var(--space-4);
+  gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-md);
   text-decoration: none;
@@ -20,7 +20,7 @@
 
 .top-risks__row:hover {
   background: var(--bg-raised);
-  border-color: var(--border-glass-strong);
+  border-color: var(--accent-cyan-line);
   transform: translateX(2px);
 }
 
@@ -55,7 +55,7 @@
 }
 
 .top-risks__crown {
-  color: #f59e0b;
+  color: var(--accent-amber);
 }
 
 .top-risks__hops,

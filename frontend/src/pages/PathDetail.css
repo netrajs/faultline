@@ -41,7 +41,7 @@
 }
 
 .path-detail__crown {
-  color: #f59e0b;
+  color: var(--accent-amber);
   margin-left: var(--space-2);
 }
 
@@ -82,6 +82,7 @@
   font-size: var(--text-lg);
   font-weight: 700;
   color: var(--text-primary);
+  letter-spacing: -0.01em;
   font-variant-numeric: tabular-nums;
 }
 

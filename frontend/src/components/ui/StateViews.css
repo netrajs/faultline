@@ -52,20 +52,21 @@
 }
 
 .state-view__icon--empty {
-  background: linear-gradient(145deg, var(--accent-cyan-soft), transparent);
+  background: radial-gradient(circle at 50% 25%, #ffffff, rgba(56, 189, 248, 0.16));
   color: var(--accent-cyan);
-  box-shadow: 0 0 24px -6px var(--accent-cyan);
+  box-shadow: inset 0 0 0 1px var(--accent-cyan-line), 0 12px 28px -14px rgba(2, 132, 199, 0.5);
 }
 
 .state-view__icon--error {
-  background: linear-gradient(145deg, rgba(239, 68, 68, 0.16), transparent);
+  background: radial-gradient(circle at 50% 25%, #ffffff, rgba(220, 38, 38, 0.14));
   color: var(--state-negative);
-  box-shadow: 0 0 24px -6px var(--state-negative);
+  box-shadow: inset 0 0 0 1px rgba(220, 38, 38, 0.28), 0 12px 28px -14px rgba(220, 38, 38, 0.45);
 }
 
 .state-view__title {
   font-size: var(--text-lg);
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   color: var(--text-primary);
 }
 
@@ -92,7 +93,7 @@
   padding: var(--space-3);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   overflow-x: auto;
   white-space: pre-wrap;
   word-break: break-word;
@@ -128,9 +129,9 @@
   border-radius: var(--radius-sm);
   background: linear-gradient(
     90deg,
-    var(--bg-sunken) 0%,
-    var(--border-glass-strong) 50%,
-    var(--bg-sunken) 100%
+    rgba(19, 62, 122, 0.05) 0%,
+    rgba(19, 62, 122, 0.13) 50%,
+    rgba(19, 62, 122, 0.05) 100%
   );
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.6s ease-in-out infinite;

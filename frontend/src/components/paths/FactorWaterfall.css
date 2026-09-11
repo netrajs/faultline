@@ -28,14 +28,14 @@
 .factor-waterfall__line {
   fill: none;
   stroke: var(--accent-cyan);
-  stroke-width: 1.5;
-  opacity: 0.7;
+  stroke-width: 1.75;
+  opacity: 0.75;
 }
 
 .factor-waterfall__dot {
-  fill: var(--bg-app);
+  fill: var(--bg-card);
   stroke: var(--accent-cyan);
-  stroke-width: 1.5;
+  stroke-width: 2;
 }
 
 .factor-waterfall__col {
@@ -60,23 +60,24 @@
 }
 
 .factor-waterfall__bar {
-  width: 34px;
+  width: 36px;
   border-radius: var(--radius-sm) var(--radius-sm) 0 0;
   background: var(--border-glass-strong);
+  box-shadow: 0 6px 14px -8px rgba(23, 58, 110, 0.4);
   transition: height var(--duration-slow) var(--ease-out-expo);
-  min-height: 2px;
+  min-height: 3px;
 }
 
 .factor-waterfall__bar--worse {
-  background: linear-gradient(180deg, var(--state-negative), rgba(239, 68, 68, 0.25));
+  background: linear-gradient(180deg, #f43f5e, rgba(244, 63, 94, 0.32));
 }
 
 .factor-waterfall__bar--better {
-  background: linear-gradient(180deg, var(--state-positive), rgba(16, 185, 129, 0.25));
+  background: linear-gradient(180deg, #10b981, rgba(16, 185, 129, 0.32));
 }
 
 .factor-waterfall__bar--neutral {
-  background: linear-gradient(180deg, var(--text-muted), rgba(100, 116, 139, 0.2));
+  background: linear-gradient(180deg, #7f96b8, rgba(127, 150, 184, 0.34));
 }
 
 .factor-waterfall__captions {
@@ -107,6 +108,7 @@
 
 .factor-waterfall__label {
   font-size: var(--text-xs);
+  font-weight: 500;
   color: var(--text-primary);
   line-height: var(--leading-tight);
 }

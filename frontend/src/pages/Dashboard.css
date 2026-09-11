@@ -6,7 +6,9 @@
 
 .dashboard__stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  /* Narrow enough that the five run-summary cards land in one row on a
+     normal desktop column rather than leaving a four-plus-one orphan. */
+  grid-template-columns: repeat(auto-fit, minmax(178px, 1fr));
   gap: var(--space-4);
 }
 
@@ -23,10 +25,23 @@
 }
 
 .dashboard__panel-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
   font-size: var(--text-md);
   font-weight: 700;
+  letter-spacing: -0.01em;
   color: var(--text-primary);
   margin-bottom: var(--space-5);
+}
+
+/* A short accent rule under each panel heading, so a wall of panels reads as
+   a set of sections rather than one long column of equal-weight text. */
+.dashboard__panel-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border-glass), transparent);
 }
 
 .dashboard__panel-empty {
@@ -53,7 +68,7 @@
 
 .dashboard__crown-name {
   font-weight: 600;
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   color: var(--text-primary);
 }
 

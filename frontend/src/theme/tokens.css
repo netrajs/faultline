@@ -8,60 +8,96 @@
  * colours and edge styles are configuration, they live in MySQL, and they are
  * written onto the document as custom properties at runtime once the
  * corresponding API responses arrive. See src/theme/applyRuntimeTheme.ts.
+ *
+ * The palette is light: a soft sky-blue field, white panels lifted off it by
+ * diffuse ambient shadow rather than by hard borders, and near-black type for
+ * contrast that holds at small sizes. Two treatments carry depth, and they
+ * are used for different jobs:
+ *
+ *   - neumorphic lift (--shadow-panel / --shadow-lift): every ordinary panel.
+ *     Soft, wide, low-alpha, no hard edge.
+ *   - frosted glass (--glass-blur + a translucent surface): reserved for the
+ *     few surfaces that genuinely float over scrolling content -- the topbar,
+ *     the sidebar rail and the dashboard hero. Everywhere else it would just
+ *     cost contrast.
  */
 
 :root {
-  /* Surfaces. Liquid-glass panels read light and translucent against a
-     darker app background -- the backdrop-filter is what does the work of
-     tinting them, so the base surface color here stays close to white and
-     lets alpha carry the depth, rather than baking a dark tint into the
-     panel itself. */
-  --bg-app: #05070d;
-  --bg-card: rgba(255, 255, 255, 0.055);
-  --bg-panel: rgba(255, 255, 255, 0.045);
-  --bg-raised: rgba(255, 255, 255, 0.09);
-  --bg-sunken: rgba(0, 0, 0, 0.22);
-  --bg-overlay: rgba(5, 7, 13, 0.5);
+  /* The field the whole interface sits on, and the surfaces that sit on it.
+     Panels are white; insets step *down* into pale sky rather than up into
+     grey, which keeps a nested row from muddying the panel around it. */
+  --bg-app: #eef5fd;
+  --bg-card: #ffffff;
+  --bg-panel: rgba(255, 255, 255, 0.92);
+  --bg-raised: rgba(2, 132, 199, 0.08);
+  --bg-sunken: rgba(226, 239, 252, 0.85);
+  --bg-overlay: rgba(15, 34, 60, 0.28);
 
-  /* Borders and separation */
-  --border-glass: rgba(255, 255, 255, 0.12);
-  --border-glass-strong: rgba(255, 255, 255, 0.22);
-  --border-subtle: rgba(255, 255, 255, 0.06);
+  /* Chrome rails. White, so the frame reads as paper and the sky field shows
+     only in the content column between them. */
+  --bg-rail: rgba(255, 255, 255, 0.88);
+  --bg-rail-raised: rgba(2, 132, 199, 0.08);
 
-  /* Type */
-  --text-primary: #e2e8f0;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --text-inverse: #0a0e1a;
+  /* Borders. Hairlines only: on a light theme the shadow does the separating,
+     and a heavy border is what makes a clean layout look boxed-in. */
+  --border-glass: rgba(19, 62, 122, 0.1);
+  --border-glass-strong: rgba(19, 62, 122, 0.2);
+  --border-subtle: rgba(19, 62, 122, 0.06);
 
-  /* Accents. Cyan/purple are the brand pair used for primary emphasis;
+  /* Type. Primary is a near-black navy rather than grey, so body copy holds
+     its contrast on white; muted still clears a comfortable ratio, because
+     the small uppercase labels are set in it. */
+  --text-primary: #0d1b2e;
+  --text-secondary: #44597a;
+  --text-muted: #69809f;
+  --text-inverse: #ffffff;
+
+  /* Accents. Sky/violet are the brand pair used for primary emphasis;
      amber/rose/emerald exist so repeated chrome (stat cards, badges) doesn't
      read as one color repeated five times -- these are chrome, never a
-     stand-in for the risk-tier colors, which still come from the API. */
-  --accent-cyan: #38bdf8;
-  --accent-purple: #8b5cf6;
-  --accent-amber: #f5a524;
-  --accent-rose: #fb7185;
-  --accent-emerald: #2dd4bf;
-  --accent-cyan-soft: rgba(56, 189, 248, 0.14);
-  --accent-purple-soft: rgba(139, 92, 246, 0.14);
-  --accent-amber-soft: rgba(245, 165, 36, 0.14);
-  --accent-rose-soft: rgba(251, 113, 133, 0.14);
-  --accent-emerald-soft: rgba(45, 212, 191, 0.14);
-  --gradient-brand: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+     stand-in for the risk-tier colors, which still come from the API. Each is
+     a mid-weight, saturated tone chosen to stay legible on white: clean and
+     friendly, not neon, and never glowing. */
+  --accent-cyan: #0284c7;
+  --accent-cyan-bright: #38bdf8;
+  --accent-purple: #7c3aed;
+  --accent-amber: #d97706;
+  --accent-rose: #e11d48;
+  --accent-emerald: #059669;
 
-  /* Ambient background wash. Separate from the accent-*-soft tokens above
-     (which size icon badges) so the two can be tuned independently -- the
-     wash needs to read at a much larger scale and slightly higher chroma to
-     show clearly through the now-translucent glass panels. */
-  --wash-cyan: rgba(56, 189, 248, 0.20);
-  --wash-purple: rgba(139, 92, 246, 0.22);
-  --wash-rose: rgba(251, 113, 133, 0.12);
+  /* Pale fills behind accent-coloured icons and chips, with a matching line
+     for the edge. Tint only -- the colour itself stays in the glyph. */
+  --accent-cyan-soft: rgba(2, 132, 199, 0.1);
+  --accent-purple-soft: rgba(124, 58, 237, 0.1);
+  --accent-amber-soft: rgba(217, 119, 6, 0.11);
+  --accent-rose-soft: rgba(225, 29, 72, 0.09);
+  --accent-emerald-soft: rgba(5, 150, 105, 0.1);
+  --accent-cyan-line: rgba(2, 132, 199, 0.3);
+  --accent-purple-line: rgba(124, 58, 237, 0.28);
+  --accent-amber-line: rgba(217, 119, 6, 0.3);
+  --accent-rose-line: rgba(225, 29, 72, 0.26);
+  --accent-emerald-line: rgba(5, 150, 105, 0.28);
+  --gradient-brand: linear-gradient(135deg, var(--accent-cyan-bright), #6366f1);
 
-  /* Glass */
-  --glass-blur: 28px;
-  --glass-saturation: 220%;
-  --glass-highlight: rgba(255, 255, 255, 0.14);
+  /* Ambient wash in the page field. Separate from the accent-*-soft tokens
+     above (which size icon badges) so the two can be tuned independently:
+     these read at the scale of the whole window and stay pale enough that
+     white panels still separate from the field behind them. */
+  --wash-cyan: rgba(56, 189, 248, 0.3);
+  --wash-purple: rgba(129, 140, 248, 0.16);
+  --wash-rose: rgba(244, 114, 182, 0.08);
+
+  /* A faint measuring grid in the field, for depth under the panels. Quiet
+     enough to register as texture rather than as content. */
+  --grid-line: rgba(19, 62, 122, 0.045);
+  --grid-size: 52px;
+
+  /* Frosted glass, for the few surfaces that float over moving content. The
+     saturation lift is what makes a white panel pick up the sky behind it
+     instead of going flat grey. */
+  --glass-blur: 22px;
+  --glass-saturation: 165%;
+  --glass-highlight: rgba(255, 255, 255, 0.9);
 
   /* Motion. Mirrored in src/theme/motion.ts for the JS animation layer. */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -85,52 +121,59 @@
   --space-10: 40px;
   --space-12: 48px;
 
-  /* Radii */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 20px;
+  /* Radii. Generous, to match the airy spacing. */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
   --radius-pill: 999px;
 
-  /* Elevation. Restrained: one ambient shadow, one lift. */
-  --shadow-ambient: 0 1px 2px rgba(0, 0, 0, 0.35);
-  --shadow-panel: 0 18px 44px rgba(0, 0, 0, 0.42);
-  --shadow-lift: 0 22px 60px rgba(0, 0, 0, 0.5);
+  /* Elevation. Soft and diffuse, never a hard edge: a hairline of white along
+     the top, a close contact shadow, and one wide ambient shadow tinted with
+     the blue of the field so the lift looks like it belongs to this palette. */
+  --shadow-ambient: 0 1px 2px rgba(23, 58, 110, 0.06);
+  --shadow-panel: inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 1px 2px rgba(23, 58, 110, 0.05),
+    0 10px 24px -12px rgba(23, 58, 110, 0.16), 0 28px 56px -30px rgba(23, 58, 110, 0.2);
+  --shadow-lift: inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 2px 4px rgba(23, 58, 110, 0.06),
+    0 16px 34px -14px rgba(23, 58, 110, 0.2), 0 40px 72px -34px rgba(23, 58, 110, 0.24);
 
-  /* Type scale */
+  /* Type scale. A step up across the board from the original: the dashboard
+     is read at arm's length on a large display, and 13px body with 10px
+     labels was the single biggest legibility cost in that scale. */
   --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'Cascadia Mono', ui-monospace, monospace;
-  --text-2xs: 10px;
-  --text-xs: 11px;
-  --text-sm: 12px;
-  --text-base: 13px;
-  --text-md: 15px;
-  --text-lg: 18px;
-  --text-xl: 24px;
-  --text-2xl: 32px;
-  --text-3xl: 42px;
+  --text-2xs: 11px;
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-base: 14px;
+  --text-md: 16px;
+  --text-lg: 20px;
+  --text-xl: 26px;
+  --text-2xl: 34px;
+  --text-3xl: 44px;
   --leading-tight: 1.2;
   --leading-normal: 1.55;
-  --tracking-wide: 0.06em;
-  --tracking-wider: 0.12em;
+  --tracking-wide: 0.05em;
+  --tracking-wider: 0.11em;
 
   /* Layout */
-  --sidebar-width: 244px;
+  --sidebar-width: 248px;
   --sidebar-width-collapsed: 64px;
-  --topbar-height: 58px;
-  --statusbar-height: 30px;
+  --topbar-height: 62px;
+  --statusbar-height: 32px;
   --content-max-width: 1680px;
 
   /* Focus. Visible, high contrast, never removed. */
-  --focus-ring: 0 0 0 2px var(--bg-app), 0 0 0 4px var(--accent-cyan);
+  --focus-ring: 0 0 0 2px #ffffff, 0 0 0 4px var(--accent-cyan);
   --focus-ring-inset: inset 0 0 0 1px var(--accent-cyan);
 
   /* Neutral state colouring for chrome that carries no domain meaning.
      Anything that reports a domain status takes its colour from the API. */
-  --state-neutral: #64748b;
-  --state-positive: #10b981;
-  --state-negative: #ef4444;
-  --state-unknown: #475569;
+  --state-neutral: #69809f;
+  --state-positive: #059669;
+  --state-negative: #dc2626;
+  --state-warning: #d97706;
+  --state-unknown: #94a3b8;
 
   --z-content: 1;
   --z-sticky: 20;

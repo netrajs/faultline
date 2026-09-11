@@ -4,10 +4,12 @@
   align-items: center;
   gap: var(--space-5);
   padding: 0 var(--space-6);
-  border-top: 1px solid var(--border-glass);
-  background: var(--bg-sunken);
+  border-top: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   font-size: var(--text-2xs);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   letter-spacing: var(--tracking-wide);
 }
 
@@ -27,7 +29,7 @@
 }
 
 .status-bar__indicator--degraded {
-  color: #f59e0b;
+  color: var(--state-warning);
 }
 
 .status-bar__indicator--unknown {
@@ -45,7 +47,8 @@
 .status-bar__brand {
   text-transform: uppercase;
   font-weight: 700;
-  color: var(--text-secondary);
+  letter-spacing: var(--tracking-wider);
+  color: var(--text-primary);
 }
 
 @media (max-width: 700px) {

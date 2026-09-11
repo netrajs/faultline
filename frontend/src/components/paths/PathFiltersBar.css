@@ -13,6 +13,7 @@
 
 .path-filters__label {
   font-size: var(--text-xs);
+  font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
@@ -21,13 +22,25 @@
 
 .path-filters select,
 .path-filters input[type='number'] {
-  background: var(--bg-sunken);
-  border: 1px solid var(--border-glass-strong);
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
   border-radius: var(--radius-sm);
   color: var(--text-primary);
   font-size: var(--text-sm);
-  padding: 6px var(--space-3);
+  padding: 7px var(--space-3);
   font-family: var(--font-sans);
+  transition: border-color var(--duration-fast) var(--ease-standard), background-color var(--duration-fast) var(--ease-standard);
+}
+
+.path-filters select:hover,
+.path-filters input[type='number']:hover {
+  border-color: var(--border-glass-strong);
+  background: var(--accent-cyan-soft);
+}
+
+.path-filters option {
+  background: var(--bg-card);
+  color: var(--text-primary);
 }
 
 .path-filters input[type='number'] {

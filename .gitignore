@@ -1,0 +1,55 @@
+# ── Python ──
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.hypothesis/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+
+# ── Node ──
+node_modules/
+dist/
+dist-ssr/
+.vite/
+*.local
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ── Foundry ──
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+contracts/lib/
+
+# ── Environment & secrets ──
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+
+# ── MySQL local data ──
+mysql-data/
+*.sql.bak
+dump.sql
+
+# ── Editor / OS ──
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Local working artifacts ──
+.claude/
+scratch/
+tmp/
+*.log

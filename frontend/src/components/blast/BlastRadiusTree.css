@@ -1,0 +1,197 @@
+.blast-tree {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+/* A wide depth row makes the diagram wider than the page. It scrolls inside its
+   own box rather than shrinking labels to nothing or widening the whole page. */
+.blast-tree__scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.blast-tree__svg {
+  display: block;
+  min-width: 100%;
+}
+
+.blast-tree__trunk,
+.blast-tree__rail {
+  stroke: var(--border-strong, var(--border-subtle));
+  stroke-width: 1.5px;
+}
+
+.blast-tree__row-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  fill: var(--text-secondary);
+}
+
+.blast-tree__row-count {
+  font-size: 10.5px;
+  font-weight: 600;
+  fill: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.blast-tree__node {
+  cursor: pointer;
+}
+
+.blast-tree__hit {
+  stroke: transparent;
+  stroke-width: 30px;
+}
+
+.blast-tree__drop {
+  transition: stroke-width 160ms ease, filter 160ms ease;
+}
+
+.blast-tree__node:hover .blast-tree__drop {
+  filter: brightness(1.15);
+}
+
+.blast-tree__node--active .blast-tree__drop {
+  filter: drop-shadow(0 0 3px rgba(2, 132, 199, 0.45));
+}
+
+.blast-tree__circle {
+  filter: drop-shadow(0 2px 4px rgba(23, 58, 110, 0.18));
+  transition: r 140ms ease;
+}
+
+.blast-tree__node:hover .blast-tree__circle,
+.blast-tree__node--active .blast-tree__circle {
+  filter: drop-shadow(0 3px 8px rgba(23, 58, 110, 0.34));
+}
+
+.blast-tree__crown {
+  font-size: 15px;
+  fill: #ffffff;
+  pointer-events: none;
+}
+
+.blast-tree__node-label {
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--text-primary);
+  pointer-events: none;
+}
+
+.blast-tree__node-chance {
+  font-size: 10.5px;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.blast-tree__origin-halo {
+  fill: none;
+  stroke: var(--border-strong, var(--border-subtle));
+  stroke-width: 1.5px;
+  stroke-dasharray: 4 4;
+}
+
+.blast-tree__origin-label {
+  font-size: 12.5px;
+  font-weight: 800;
+  fill: var(--text-primary);
+}
+
+.blast-tree__overflow-circle {
+  fill: var(--bg-card);
+  stroke: var(--border-strong, var(--border-subtle));
+  stroke-width: 1.5px;
+  stroke-dasharray: 3 3;
+}
+
+.blast-tree__overflow-count {
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+.blast-tree__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.blast-tree__legend-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.blast-tree__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.blast-tree__legend-swatch {
+  width: 18px;
+  height: 4px;
+  border-radius: 2px;
+}
+
+.blast-tree__detail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 34px;
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+}
+
+.blast-tree__detail--empty {
+  color: var(--text-muted);
+  border-style: dashed;
+}
+
+.blast-tree__detail-kind {
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.blast-tree__detail-name {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.blast-tree__detail-crown {
+  color: #d97706;
+}
+
+.blast-tree__detail-fact {
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.blast-tree__detail-id {
+  margin-left: auto;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  color: var(--text-muted);
+}

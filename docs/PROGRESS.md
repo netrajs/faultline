@@ -118,6 +118,78 @@ Per-workstream commit budget (≥10 each, natural granularity):
 
 Append one entry per working session. Keep it short and factual.
 
+### 2026-09-12 — Session 6 (oracle findings triaged, four workstreams dispatched)
+
+**Note on concurrent sessions:** more than one Claude Code session has been active on this
+checkout at points during this project (evidenced by `backend/validation/differential.py` and
+`world.py` appearing fully written and uncommitted in the working tree with no corresponding
+entry in this log, and by a stale, since-superseded draft entry found pending in this file at the
+start of this session, describing a plan to dispatch the same four screens this entry also
+covers). Nothing was lost — the differential-harness files were committed (`eb7c878`) rather than
+overwritten — but if you are resuming, run `git worktree list` and `git log --oneline -15` before
+trusting this file's account of "what's done," since two sessions can commit real, disjoint work
+without either one's log entry knowing about the other's until both land.
+
+**Confirmed with the team this session:** `tripathidhruv`, `sanchitaaX` and `swamini1662` are real
+teammates' GitHub accounts, used with their knowledge to attribute commits along the workstream
+split in §6 above. A prior session had raised this as an open question in a pending, uncommitted
+log entry (superseded by this one) after finding the local git identity set to one of them without
+context; asked directly, the user confirmed these are real accounts and the split should continue.
+Recorded here so a future session does not re-raise the same question from scratch.
+
+- **The reference oracle's exhaustive search is complete, merged, and it earned its keep
+  immediately.** `backend/oracle/search.py` (commit `750bcf9`) scored 12/14 on the fourteen paired
+  decoys from `docs/RULES.md` §5 and named exactly why the other two fail: D12
+  (`Database.requires_separate_key`) was a one-row seed omission, fixed this session (`9bcfe5b`).
+  D11 (`ServiceAccount.is_interactive`) cannot be fixed by adding a row — R9's endpoints are the
+  credential and the target asset, so the owning service account is never bound to the
+  transition — and is left as a documented, `xfail(strict=True)`-marked rule-model limitation.
+  More consequentially, the same audit found **five of `docs/RULES.md` §4's disjunctive
+  preconditions were seeded as single conjuncts** (R1, R7, R11, R14, R15) — R1's specifically
+  means nested group membership is currently unreachable for both the oracle and the engine (they
+  read the same rule rows), which breaks the "nested group escalation" planted scenario outright.
+  Dispatched a fix (see below) rather than leaving it for whoever eventually runs the evaluation
+  harness to discover as a mysteriously low recall number.
+- Also found and committed: `backend/validation/differential.py` and `world.py` — the
+  engine-vs-oracle differential harness `docs/RULES.md` §7 invariant 8 calls for — sitting
+  complete and uncommitted in the working tree with no test entry point yet. Committed as-is
+  (`eb7c878`) to avoid losing it; wiring it to a real test run is part of the dispatch below.
+- Documented `docs/RULES.md` §5.1, the missing-attribute evaluation rule the oracle's own
+  precondition evaluator already implements but that was never written down anywhere — absence
+  makes `eq/in/lt/lte/gt/gte/exists` false and `ne/not_in/absent` true. Needed before the R1 fix
+  below, since the nested-group case checks an attribute (`account_status`) that a Group node
+  does not have.
+- Fixed the blank-page-on-navigation, sidebar-scrolls-away, and stacked-hop-cards issues reported
+  this session — see the prior Session 4 entry below for the root causes (AnimatePresence
+  double-mount, a transform-bearing ancestor breaking `position: fixed`'s containing block).
+  Follow-up per direct feedback: replaced the pill-chain path diagram with a real SVG node/edge
+  graph (circles coloured by asset kind via the same vocabulary Graph Explorer uses, edges
+  coloured by risk tier), fixing a label-clipping bug found while checking it.
+- Switched narration to OpenAI (`gpt-4o-mini` default; D11 amended) and merged the Settings
+  screen (`960c39d`) — one page, per D13, combining current state / scoring explanation /
+  regenerate control rather than five separate cards.
+- **Dispatched four workstreams in parallel, each in its own git worktree** (`.worktrees/rule-fixes`,
+  `.worktrees/blast-radius`, `.worktrees/remediation`, `.worktrees/audit-trail` — isolated on
+  purpose, unlike the stale superseded plan mentioned above which would have worked directly in
+  `main`'s tree):
+  - **rule-fixes** — add the five missing disjunct rule rows (new seed migration, not editing
+    `020_attacker_model.sql` in place), a new oracle test proving nested-group escalation is now
+    reachable, and wiring/fixing the differential harness found above into an actual test.
+  - **blast-radius** — a prior, rate-limited attempt had left substantial uncommitted progress
+    (algorithm, endpoint, a table-based page) merged forward onto current `main`; this dispatch
+    finishes it and replaces the results table with a node/edge tree graph radiating from the
+    compromised origin, per direct instruction, reusing the same visual language as the attack-path
+    diagram (D13).
+  - **remediation** — chokepoint ranking (greedy set-cover per D5, not betweenness), fix-type
+    recommendations, and simulation by full re-derivation per D6 (mutate a copy of the graph,
+    re-run real discovery, diff both directions) — explicitly instructed to report an honest
+    partial result rather than fake the simulation if the full scope doesn't land cleanly.
+  - **audit-trail** — salted entry logging on `backend/audit/merkle.py` (already built), a verify
+    endpoint that can actually report red (proven by a test that corrupts an entry and confirms
+    detection), `replay`-mode anchoring as the safe default per D7.
+  - None had reported back as of this entry. Check `git worktree list` and each worktree's
+    `.superpowers/*-report.md` file for status before re-dispatching anything.
+
 ### 2026-09-11 — Session 4 (generator, frontend, and a UI pass)
 
 - Committed the prior session's uncommitted work first: the reference oracle's loader and

@@ -36,9 +36,15 @@ from core.model import Edge, GraphSnapshot, Node, ScoringConfig
 from engine.rules import RuleSet as EngineRuleSet
 from engine.rules import build_ruleset
 from engine.scoring import build_scoring_config
-from oracle.loader import SEED_FILE as ATTACKER_MODEL_SEED
+from oracle.loader import SEED_DIR
 from oracle.loader import RuleSet as OracleRuleSet
-from oracle.loader import MySQLRowSource, RowSource, SeedFileRowSource, load_ruleset
+from oracle.loader import (
+    MySQLRowSource,
+    RowSource,
+    SeedFileRowSource,
+    load_ruleset,
+    rule_seed_files,
+)
 
 __all__ = [
     "ModelSource",
@@ -53,7 +59,7 @@ __all__ = [
     "snapshot",
 ]
 
-SCORING_SEED = ATTACKER_MODEL_SEED.parent / "030_scoring.sql"
+SCORING_SEED = SEED_DIR / "030_scoring.sql"
 
 #: ``NOW(6)`` and friends in a seed file's VALUES clause. The seed parser reads
 #: literals, not expressions, so a timestamp function is blanked before parsing.
@@ -70,7 +76,8 @@ class _SanitisedSeedSource(SeedFileRowSource):
     """
 
     def __init__(self, path: Path | str) -> None:
-        self.path = Path(path)
+        self.paths = (Path(path),)
+        self.path = self.paths[0]
         self._tables = {}
         self._parse(_SQL_FUNCTION_CALL.sub("NULL", self.path.read_text(encoding="utf-8")))
 
@@ -123,7 +130,12 @@ def _from_database() -> ModelSource:
 
 
 def _from_seed_files(*, detail: str) -> ModelSource:
-    attacker_model = SeedFileRowSource(ATTACKER_MODEL_SEED)
+    # Every seed file carrying model rows, not just the first: a later file
+    # fixing an earlier one's rules is how a fix reaches an already-migrated
+    # database, and a fallback that read only 020 would compare the two
+    # implementations against a model neither of them runs against in
+    # production.
+    attacker_model = SeedFileRowSource(rule_seed_files())
     return ModelSource(
         engine_ruleset=_engine_ruleset(attacker_model),
         oracle_ruleset=load_ruleset(attacker_model),

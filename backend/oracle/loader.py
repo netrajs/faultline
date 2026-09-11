@@ -14,11 +14,13 @@ Two row sources are provided and they must agree:
     ``threat_model_grant`` from a live connection.
 
 ``SeedFileRowSource``
-    Parses the same ``INSERT`` statements out of
-    ``backend/db/seed/020_attacker_model.sql``. It exists so the oracle's test
-    suite runs on a machine with no MySQL, and so CI can check the two sources
-    produce an identical :class:`RuleSet` — which is a real check, because a
-    seed file that has drifted from the applied schema is otherwise invisible.
+    Parses the same ``INSERT`` statements out of the seed files under
+    ``backend/db/seed`` — ``rule_seed_files()`` finds the ones carrying model
+    rows, and reading them in the order the migration runner applies them
+    reproduces the rows it inserted. It exists so the oracle's test suite runs
+    on a machine with no MySQL, and so CI can check the two sources produce an
+    identical :class:`RuleSet` — which is a real check, because a seed file that
+    has drifted from the applied schema is otherwise invisible.
 
 Both feed the same row-to-model conversion below, so there is exactly one place
 where a column becomes a meaning.
@@ -45,16 +47,61 @@ from oracle.preconditions import PreconditionEvaluationError, validate_precondit
 
 __all__ = [
     "CapabilityAtom",
+    "MODEL_TABLES",
     "MySQLRowSource",
     "RowSource",
     "RuleDataError",
     "RuleSet",
     "SeedFileRowSource",
     "load_ruleset",
+    "rule_seed_files",
+    "SEED_DIR",
     "SEED_FILE",
 ]
 
-SEED_FILE = Path(__file__).resolve().parents[1] / "db" / "seed" / "020_attacker_model.sql"
+SEED_DIR = Path(__file__).resolve().parents[1] / "db" / "seed"
+SEED_FILE = SEED_DIR / "020_attacker_model.sql"
+
+#: The tables the attacker model lives in.
+#:
+#: Longest names first: the pattern below anchors on the opening parenthesis of
+#: the column list, so ``technique`` cannot match ``technique_baseline``, but
+#: ordering the alternation by length keeps that from depending on it.
+MODEL_TABLES: tuple[str, ...] = (
+    "threat_model_grant",
+    "rule_precondition",
+    "capability_atom",
+    "rule_effect",
+    "threat_model",
+    "technique",
+    "rule",
+)
+
+_MODEL_INSERT = re.compile(
+    r"INSERT\s+INTO\s+`?(?:" + "|".join(MODEL_TABLES) + r")`?\s*\(",
+    re.IGNORECASE,
+)
+
+
+def rule_seed_files(directory: Path | str = SEED_DIR) -> tuple[Path, ...]:
+    """Every seed file carrying attacker-model rows, in the order applied.
+
+    Discovered rather than listed, because a list is a thing that goes stale.
+    ``020_attacker_model.sql`` is where the model starts, but a fix to it is a
+    new numbered file -- ``db.migrate`` refuses to re-apply a file whose
+    checksum changed -- and a seed-file row source that reads only the first of
+    them describes a database nobody has. That divergence is invisible: the
+    rules still load, they are just the rules from before the fix.
+
+    The migration runner applies the directory in lexical order and each of
+    these files only inserts, so reading them in the same order reconstructs the
+    same rows, ``AUTO_INCREMENT`` ids included.
+    """
+    return tuple(
+        path
+        for path in sorted(Path(directory).glob("*.sql"))
+        if _MODEL_INSERT.search(path.read_text(encoding="utf-8"))
+    )
 
 
 class RuleDataError(RuntimeError):
@@ -87,21 +134,33 @@ class MySQLRowSource:
 
 
 class SeedFileRowSource:
-    """Rows parsed out of a seed ``.sql`` file.
+    """Rows parsed out of one or more seed ``.sql`` files.
 
     Only ``INSERT INTO <table> (<columns>) VALUES (...), (...)`` is understood,
     which is all the seed files use. ``AUTO_INCREMENT`` ids are reconstructed by
     insertion order, and ``(SELECT id FROM rule WHERE code='...')`` subqueries —
     which is how the seed refers to those ids — are resolved against that.
+
+    Several files read as one source, in the order given, which is how a later
+    seed file adding rows to an earlier one's tables is represented: the rows
+    accumulate exactly as they do in the database, so the reconstructed ids
+    match what ``AUTO_INCREMENT`` assigned there.
     """
 
     #: Tables whose primary key is a reconstructed AUTO_INCREMENT integer.
     _AUTO_INCREMENT = {"rule": "id"}
 
-    def __init__(self, path: Path | str = SEED_FILE) -> None:
-        self.path = Path(path)
+    def __init__(self, path: Path | str | Sequence[Path | str] = SEED_FILE) -> None:
+        paths = [path] if isinstance(path, (str, Path)) else list(path)
+        if not paths:
+            raise RuleDataError("a seed row source needs at least one file to read")
+        self.paths = tuple(Path(p) for p in paths)
+        #: The first file, used to name the source in error messages.
+        self.path = self.paths[0]
         self._tables: dict[str, list[dict[str, Any]]] = {}
-        self._parse(self.path.read_text(encoding="utf-8"))
+        for seed in self.paths:
+            self._parse_statements(seed.read_text(encoding="utf-8"), seed.name)
+        self._resolve_subqueries()
 
     # -- parsing ------------------------------------------------------------
 
@@ -111,6 +170,16 @@ class SeedFileRowSource:
     )
 
     def _parse(self, sql: str) -> None:
+        """Parse one file's worth of SQL and finish the source.
+
+        Kept for subclasses that read a file the constructor cannot: see
+        ``validation.world._SanitisedSeedSource``, which rewrites the text
+        before it is parsed.
+        """
+        self._parse_statements(sql, self.path.name)
+        self._resolve_subqueries()
+
+    def _parse_statements(self, sql: str, label: str) -> None:
         for statement in _split_statements(sql):
             match = self._INSERT.match(statement.strip())
             if not match:
@@ -123,14 +192,13 @@ class SeedFileRowSource:
                 values = [_parse_sql_literal(v) for v in _split_top_level(tuple_text)]
                 if len(values) != len(columns):
                     raise RuleDataError(
-                        f"{self.path.name}: INSERT INTO {table} has {len(columns)} columns "
+                        f"{label}: INSERT INTO {table} has {len(columns)} columns "
                         f"but a row with {len(values)} values"
                     )
                 row = dict(zip(columns, values, strict=True))
                 if auto_column and auto_column not in row:
                     row[auto_column] = len(rows) + 1
                 rows.append(row)
-        self._resolve_subqueries()
 
     def _resolve_subqueries(self) -> None:
         rule_ids = {row["code"]: row["id"] for row in self._tables.get("rule", [])}
@@ -142,16 +210,20 @@ class SeedFileRowSource:
 
     # -- RowSource ----------------------------------------------------------
 
+    @property
+    def label(self) -> str:
+        return ", ".join(p.name for p in self.paths)
+
     def fetch(self, table: str, columns: Sequence[str]) -> list[tuple[Any, ...]]:
         rows = self._tables.get(table)
         if rows is None:
-            raise RuleDataError(f"{self.path.name} contains no INSERT into {table!r}")
+            raise RuleDataError(f"{self.label} contains no INSERT into {table!r}")
         out = []
         for row in rows:
             missing = [c for c in columns if c not in row]
             if missing:
                 raise RuleDataError(
-                    f"{self.path.name}: INSERT INTO {table} does not set {missing}"
+                    f"{self.label}: INSERT INTO {table} does not set {missing}"
                 )
             out.append(tuple(row[c] for c in columns))
         return out
@@ -594,7 +666,22 @@ def load_from_mysql(connection: Any, **kwargs: Any) -> RuleSet:
 
 
 def load_from_seed_file(path: Path | str = SEED_FILE, **kwargs: Any) -> RuleSet:
+    """The model as one seed file states it. Defaults to the original fifteen rules.
+
+    Deliberately not the whole seed directory: a caller asking about one file is
+    asking about one file. :func:`load_from_seed_files` is the one that matches
+    a migrated database.
+    """
     return load_ruleset(SeedFileRowSource(path), **kwargs)
+
+
+def load_from_seed_files(
+    paths: Sequence[Path | str] | None = None, **kwargs: Any
+) -> RuleSet:
+    """The model as the whole seed directory states it, which is what MySQL holds."""
+    return load_ruleset(
+        SeedFileRowSource(paths if paths is not None else rule_seed_files()), **kwargs
+    )
 
 
 def describe(ruleset: RuleSet) -> str:

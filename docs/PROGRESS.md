@@ -7,7 +7,7 @@
 **Repository:** https://github.com/netrajs/faultline
 **Problem statement:** PS17 — Attack Path & Identity Privilege Graph Analyzer (Expert), cyber + blockchain
 **Current phase:** Phase 0 — Foundations
-**Status:** Planning complete, scaffolding started. No runnable code yet.
+**Status:** Both datastores live and schema'd. Rules spec and generator are next.
 
 ---
 
@@ -17,8 +17,9 @@
 |---|---|
 | Scope & architecture | **Locked.** 12 decisions recorded in `docs/SCOPE.md`. |
 | Research | 3 of 6 recon reports complete (algorithms, blockchain, validation). 3 cut short by a session limit. |
-| MySQL schema | Not started. **Next up.** |
-| Rules spec | Not started. Blocks generator and oracle. |
+| MySQL schema | **Done.** 8 migrations, 62 tables, verified against MySQL 8.0.44. |
+| Neo4j schema | **Done.** 9 constraints, 14 indexes, verified against 5.26.0 Community. |
+| Rules spec | Not started. **Next up** — blocks generator and oracle. |
 | Generator | Not started. |
 | Oracle | Not started. Must be written from the rules spec *before* the fast engine. |
 | Engine | Not started. |
@@ -30,15 +31,15 @@
 
 ## 2. Immediate next actions, in order
 
-1. **MySQL schema + Alembic migrations.** Every table listed in D12. This unblocks everything else.
-2. **`rules` specification — prose first.** Write the precondition semantics as English in
+1. ~~MySQL and Neo4j schema.~~ **Done.**
+1. **`rules` specification — prose first.** Write the precondition semantics as English in
    `docs/RULES.md` before any code. The oracle and the engine are both written from this document,
    independently. That independence is the whole point.
-3. **Seed the rule/technique/scoring tables** from the spec via migration.
-4. **Generator** emitting primitive facts + manifest + decoy/twin registry into MySQL.
-5. **`oracle/reference.py`** — exhaustive DFS with explicit precondition checks, written from
+2. **Seed the rule/technique/scoring tables** from the spec via migration.
+3. **Generator** emitting primitive facts + manifest + decoy/twin registry into MySQL.
+4. **`oracle/reference.py`** — exhaustive DFS with explicit precondition checks, written from
    `docs/RULES.md` without looking at the generator's internals.
-6. **Engine vertical slice** — CSR load, A* over capability state, one scored path end to end.
+5. **Engine vertical slice** — CSR load, A* over capability state, one scored path end to end.
 
 ---
 
@@ -107,6 +108,27 @@ Per-workstream commit budget (≥10 each, natural granularity):
 ## 6. Session log
 
 Append one entry per working session. Keep it short and factual.
+
+### 2026-09-11 — Session 2 (foundations)
+
+- **Team directive:** Neo4j is back in, as the graph store and Graph Explorer
+  surface. This does not conflict with D1, which constrains where the *engine*
+  runs, not where the graph *lives*. Storage is now split by shape — Neo4j for the
+  graph, MySQL for rules, scoring, results, remediation, ground truth and the audit
+  ledger. Recorded as D12.
+- Found a demo beat worth building around: run the naive reachability query in
+  Graph Explorer against the same Neo4j the engine reads, and show the engine
+  returning far fewer paths, with every excluded candidate carrying a recorded
+  reason. The gap is the product thesis, executed live.
+- Wrote 8 MySQL migrations, 62 tables. Verified against MySQL 8.0.44 from clean.
+  Two defects found and fixed by actually running them: a nullable column in a
+  composite primary key, and a column named with a reserved word.
+- Wrote the Neo4j constraint and index bootstrap. Verified against 5.26.0
+  Community — 9 constraints, 14 indexes.
+- Installed Neo4j 5.26 Community standalone (no Docker, no service install; the
+  machine has a Java 17 JRE, which is sufficient).
+- Added `docs/SETUP.md` so teammates can reproduce the environment.
+- Pushed 9 commits to the repository.
 
 ### 2026-09-11 — Session 1 (planning)
 

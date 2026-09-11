@@ -1,0 +1,18 @@
+.graph-explorer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.graph-explorer__workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+@media (max-width: 1000px) {
+  .graph-explorer__workspace {
+    grid-template-columns: 1fr;
+  }
+}

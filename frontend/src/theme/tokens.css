@@ -28,7 +28,7 @@
      grey, which keeps a nested row from muddying the panel around it. */
   --bg-app: #eef5fd;
   --bg-card: #ffffff;
-  --bg-panel: rgba(255, 255, 255, 0.92);
+  --bg-panel: rgba(255, 255, 255, 0.74);
   --bg-raised: rgba(2, 132, 199, 0.08);
   --bg-sunken: rgba(226, 239, 252, 0.85);
   --bg-overlay: rgba(15, 34, 60, 0.28);
@@ -95,8 +95,8 @@
   /* Frosted glass, for the few surfaces that float over moving content. The
      saturation lift is what makes a white panel pick up the sky behind it
      instead of going flat grey. */
-  --glass-blur: 22px;
-  --glass-saturation: 165%;
+  --glass-blur: 26px;
+  --glass-saturation: 180%;
   --glass-highlight: rgba(255, 255, 255, 0.9);
 
   /* Motion. Mirrored in src/theme/motion.ts for the JS animation layer. */

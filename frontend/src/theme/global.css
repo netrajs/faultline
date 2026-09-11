@@ -118,22 +118,33 @@ ol {
 
 /* Shared surface primitive. Every panel, card and dropdown in the app
    composes this rather than redeclaring its elevation and border colour.
-   White, lifted off the sky field by diffuse ambient shadow: the hairline
-   border is there only to define the edge where the shadow is weakest. */
+   A real frosted-glass surface: translucent white over a backdrop blur, so
+   the sky field reads faintly through every panel, plus a bright hairline
+   rim along the top edge where light would catch actual glass. Elevation
+   still comes from the same soft ambient shadow as before -- the water
+   comes from what is layered on top of it, not instead of it. */
 .glass-surface {
-  background: var(--bg-card);
+  background: var(--bg-panel);
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-lg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   box-shadow: var(--shadow-panel);
   position: relative;
 }
 
-/* The frosted treatment -- a translucent surface over a real backdrop blur,
-   with a bright rim along the top edge where light catches glass -- is
-   deliberately not part of this primitive. It belongs to the three surfaces
-   that genuinely float over moving content, and each declares it where it is
-   defined: the sidebar rail, the topbar and the dashboard hero. Applying it
-   to every panel is what costs a light theme its contrast. */
+.glass-surface::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(180deg, var(--glass-highlight), transparent 38%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
 
 /* Shared call-to-action used inside empty/error states and similar chrome. */
 .pill-button {

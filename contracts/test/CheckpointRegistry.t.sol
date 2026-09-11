@@ -371,9 +371,9 @@ contract CheckpointRegistryTest is Test {
     // -------------------------------------------------------------------------------------
 
     function test_twoStepPublisherTransfer() public {
-        vm.prank(publisher);
         vm.expectEmit(true, true, true, true);
         emit CheckpointRegistry.PublisherTransferProposed(publisher, successor);
+        vm.prank(publisher);
         registry.proposePublisher(successor);
 
         // Nothing has moved yet.
@@ -388,9 +388,9 @@ contract CheckpointRegistryTest is Test {
         // The incumbent still can.
         _submit(1, RFC6962.root(_leaves(2)), 2);
 
-        vm.prank(successor);
         vm.expectEmit(true, true, true, true);
         emit CheckpointRegistry.PublisherTransferred(publisher, successor);
+        vm.prank(successor);
         registry.acceptPublisher();
 
         assertEq(registry.publisher(), successor);
@@ -443,9 +443,9 @@ contract CheckpointRegistryTest is Test {
         vm.prank(publisher);
         registry.proposePublisher(successor);
 
-        vm.prank(publisher);
         vm.expectEmit(true, true, true, true);
         emit CheckpointRegistry.PublisherTransferCancelled(publisher, successor);
+        vm.prank(publisher);
         registry.cancelPublisherTransfer();
 
         assertEq(registry.pendingPublisher(), address(0));

@@ -27,18 +27,31 @@
   flex-shrink: 0;
 }
 
+.sidebar__brand-mark-host {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
 .sidebar__brand-mark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 32px;
+  height: 32px;
+  background: var(--gradient-brand);
+  box-shadow: 0 0 0 1px var(--border-glass-strong), 0 2px 8px -2px var(--accent-cyan);
+}
+
+.sidebar__brand-mark-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-md);
-  background: var(--gradient-brand);
+  width: 100%;
+  height: 100%;
   color: var(--text-inverse);
   font-size: 17px;
-  flex-shrink: 0;
-  box-shadow: 0 0 0 1px var(--border-glass-strong), 0 4px 16px -2px var(--accent-cyan);
 }
 
 .sidebar__brand-name {

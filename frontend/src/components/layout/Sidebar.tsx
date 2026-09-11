@@ -1,3 +1,4 @@
+import LiquidGlass from 'liquid-glass-react';
 import { NavLink } from 'react-router-dom';
 
 import { useNavItems } from '@/api/config';
@@ -17,8 +18,22 @@ export function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) {
   return (
     <aside className={`sidebar ${collapsed ? 'sidebar--collapsed' : ''}`}>
       <div className="sidebar__brand">
-        <span className="sidebar__brand-mark" aria-hidden="true">
-          <Icon name="affiliate" />
+        {/* LiquidGlass centers itself via `top/left: 50%` + its own translate(-50%,-50%),
+            so it needs a fixed-size `position: relative` host to center within --
+            without one the transform offsets it against the surrounding flex layout. */}
+        <span className="sidebar__brand-mark-host">
+          <LiquidGlass
+            mode="standard"
+            cornerRadius={10}
+            blurAmount={0.06}
+            elasticity={0.2}
+            aberrationIntensity={3}
+            className="sidebar__brand-mark"
+          >
+            <span className="sidebar__brand-mark-icon" aria-hidden="true">
+              <Icon name="affiliate" />
+            </span>
+          </LiquidGlass>
         </span>
         {!collapsed && (
           <span className="sidebar__brand-name">

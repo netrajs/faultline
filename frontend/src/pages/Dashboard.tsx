@@ -6,6 +6,7 @@ import { EmptyState, ErrorState, LoadingState } from '@/components/ui/StateViews
 import { StatCard } from '@/components/dashboard/StatCard';
 import { RiskTierBreakdown } from '@/components/dashboard/RiskTierBreakdown';
 import { TopRisksList } from '@/components/dashboard/TopRisksList';
+import { Spotlight } from '@/components/dashboard/Spotlight';
 import { formatCount, formatDuration, formatScore } from '@/lib/format';
 import './Dashboard.css';
 
@@ -70,8 +71,12 @@ export function Dashboard() {
   const data = summary.data;
   if (!data) return null;
 
+  const topRisk = topRisks.data?.[0];
+
   return (
     <div className="dashboard">
+      {topRisk && <Spotlight risk={topRisk} />}
+
       <div className="dashboard__stats">
         <StatCard icon="route" label="Total paths" value={formatCount(data.total_paths)} accent="cyan" delay={0} />
         <StatCard

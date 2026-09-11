@@ -11,18 +11,22 @@
  */
 
 :root {
-  /* Surfaces */
-  --bg-app: #0a0e1a;
-  --bg-card: rgba(15, 21, 42, 0.65);
-  --bg-panel: rgba(18, 24, 48, 0.7);
-  --bg-raised: rgba(28, 36, 66, 0.75);
-  --bg-sunken: rgba(6, 9, 18, 0.55);
-  --bg-overlay: rgba(4, 7, 15, 0.72);
+  /* Surfaces. Liquid-glass panels read light and translucent against a
+     darker app background -- the backdrop-filter is what does the work of
+     tinting them, so the base surface color here stays close to white and
+     lets alpha carry the depth, rather than baking a dark tint into the
+     panel itself. */
+  --bg-app: #05070d;
+  --bg-card: rgba(255, 255, 255, 0.055);
+  --bg-panel: rgba(255, 255, 255, 0.045);
+  --bg-raised: rgba(255, 255, 255, 0.09);
+  --bg-sunken: rgba(0, 0, 0, 0.22);
+  --bg-overlay: rgba(5, 7, 13, 0.5);
 
   /* Borders and separation */
-  --border-glass: rgba(255, 255, 255, 0.08);
-  --border-glass-strong: rgba(255, 255, 255, 0.14);
-  --border-subtle: rgba(255, 255, 255, 0.05);
+  --border-glass: rgba(255, 255, 255, 0.12);
+  --border-glass-strong: rgba(255, 255, 255, 0.22);
+  --border-subtle: rgba(255, 255, 255, 0.06);
 
   /* Type */
   --text-primary: #e2e8f0;
@@ -37,9 +41,9 @@
   --accent-purple-soft: rgba(139, 92, 246, 0.14);
 
   /* Glass */
-  --glass-blur: 20px;
-  --glass-saturation: 180%;
-  --glass-highlight: rgba(255, 255, 255, 0.05);
+  --glass-blur: 28px;
+  --glass-saturation: 220%;
+  --glass-highlight: rgba(255, 255, 255, 0.14);
 
   /* Motion. Mirrored in src/theme/motion.ts for the JS animation layer. */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);

@@ -22,11 +22,15 @@ body {
   line-height: var(--leading-normal);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  /* A faint radial wash behind the glass chrome -- the ambient backdrop the
-     glass surfaces are meant to sit on top of, restrained per tokens.css. */
+  /* A radial wash behind the glass chrome -- the ambient backdrop the glass
+     surfaces are meant to sit on top of. The panels are translucent enough
+     now (see --bg-panel/--bg-card) that this wash reads clearly through
+     them, so it carries most of the app's color rather than the panels
+     themselves -- restrained per tokens.css, never a flat solid tint. */
   background-image:
-    radial-gradient(1200px 600px at 12% -10%, var(--accent-cyan-soft), transparent 60%),
-    radial-gradient(1000px 700px at 100% 0%, var(--accent-purple-soft), transparent 55%);
+    radial-gradient(1300px 750px at 10% -12%, var(--accent-cyan-soft), transparent 62%),
+    radial-gradient(1100px 800px at 102% 2%, var(--accent-purple-soft), transparent 58%),
+    radial-gradient(900px 600px at 50% 110%, var(--accent-purple-soft), transparent 65%);
   background-repeat: no-repeat;
   background-attachment: fixed;
 }

@@ -410,6 +410,22 @@ nodes, same edges, same attributes — and differ only in what the attacker mana
 before arriving. No amount of graph inspection distinguishes them. That is the case for
 state-space search stated as a test.
 
+### 5.1 Missing-attribute semantics
+
+Every implementation reading `rule_precondition`/`scoring_modifier` rows must agree on what
+happens when the attribute a check reads is simply absent from the edge or node — e.g.
+`mfa_type not_in [...]` when no `mfa_type` key exists at all. This document did not previously
+say, which is a defect: the oracle and the engine are meant to be written from this document
+*independently*, and an unstated rule is a rule each side is free to guess differently, silently
+turning "the two disagree" into noise instead of evidence.
+
+**The rule:** absence makes `eq`, `in`, `lt`, `lte`, `gt`, `gte` and `exists` evaluate **false**,
+and makes `ne`, `not_in` and `absent` evaluate **true** — i.e. absence behaves as if the attribute
+held a value that satisfies none of the "does this exist and match" operators and all of the
+"does this differ or not-exist" operators. This is not an arbitrary pick: it is the one rule that
+keeps every operator pair an exact complement under `is_negated`, so negating a precondition never
+needs a second special case for the absent branch.
+
 ---
 
 ## 6. Probability composition

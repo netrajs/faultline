@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Outlet, useLocation } from 'react-router-dom';
 
-import { fade } from '@/theme/motion';
+import { duration, easeStandard } from '@/theme/motion';
 import { Sidebar } from './Sidebar';
 import { StarField } from './StarField';
 import { Topbar } from './Topbar';
@@ -46,11 +46,26 @@ export function Layout() {
         <Topbar />
         <main className="app-shell__main">
           <div className="app-shell__content">
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div key={location.pathname} {...fade()}>
-                <Outlet />
-              </motion.div>
-            </AnimatePresence>
+            {/*
+              Enter-only fade, deliberately without AnimatePresence. Wrapping this in
+              AnimatePresence to also animate the OUTGOING page's exit means both the
+              old and new route content are mounted at once while the old one fades
+              out -- and since neither is taken out of normal document flow, the two
+              stack vertically, doubling the container's height and pushing the new
+              (fully visible) content below the fold. The page then looks blank until
+              a manual reload skips the transition and mounts only the current route.
+              A route swap doesn't need its old content to visibly animate away --
+              React Router already replaces it as part of the same update -- so this
+              only animates the incoming page in.
+            */}
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: duration('base'), ease: easeStandard }}
+            >
+              <Outlet />
+            </motion.div>
           </div>
         </main>
         <StatusBar />

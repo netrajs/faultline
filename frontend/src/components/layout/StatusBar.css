@@ -1,0 +1,55 @@
+.status-bar {
+  height: var(--statusbar-height);
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  padding: 0 var(--space-6);
+  border-top: 1px solid var(--border-glass);
+  background: var(--bg-sunken);
+  font-size: var(--text-2xs);
+  color: var(--text-muted);
+  letter-spacing: var(--tracking-wide);
+}
+
+.status-bar__indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+}
+
+.status-bar__indicator--up {
+  color: var(--state-positive);
+}
+
+.status-bar__indicator--down {
+  color: var(--state-negative);
+}
+
+.status-bar__indicator--degraded {
+  color: #f59e0b;
+}
+
+.status-bar__indicator--unknown {
+  color: var(--text-muted);
+}
+
+.status-bar__spacer {
+  flex: 1;
+}
+
+.status-bar__item {
+  white-space: nowrap;
+}
+
+.status-bar__brand {
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 700px) {
+  .status-bar__item:not(.status-bar__brand) {
+    display: none;
+  }
+}

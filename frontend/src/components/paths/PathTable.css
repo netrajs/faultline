@@ -1,0 +1,110 @@
+.path-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.path-table__head,
+.path-table__row {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 2fr) 60px 100px 130px 70px 90px 70px;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.path-table__head {
+  padding: 0 var(--space-4) var(--space-2);
+  font-size: var(--text-2xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-muted);
+}
+
+.path-table ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.path-table__row {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-subtle);
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: background-color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard), transform var(--duration-fast) var(--ease-standard);
+}
+
+.path-table__row:hover {
+  background: var(--bg-raised);
+  border-color: var(--border-glass-strong);
+  transform: translateX(2px);
+}
+
+.path-table__rank {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.path-table__route {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+.path-table__node {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.path-table__arrow {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.path-table__crown {
+  color: #f59e0b;
+}
+
+.path-table__cell {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.path-table__muted {
+  color: var(--text-muted);
+}
+
+.path-table__score {
+  font-size: var(--text-md);
+  font-weight: 700;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 1100px) {
+  .path-table__head,
+  .path-table__row {
+    grid-template-columns: 28px minmax(0, 2fr) 50px 90px 90px;
+  }
+  .path-table__head span:nth-child(5),
+  .path-table__head span:nth-child(6),
+  .path-table__head span:nth-child(7),
+  .path-table__row > *:nth-child(5),
+  .path-table__row > *:nth-child(6),
+  .path-table__row > *:nth-child(7) {
+    display: none;
+  }
+}

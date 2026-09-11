@@ -1,0 +1,20 @@
+.glass-panel--none {
+  padding: 0;
+}
+
+.glass-panel--sm {
+  padding: var(--space-4);
+}
+
+.glass-panel--md {
+  padding: var(--space-6);
+}
+
+.glass-panel--lg {
+  padding: var(--space-8);
+}
+
+.glass-panel--raised {
+  box-shadow: var(--shadow-lift);
+  border-color: var(--border-glass-strong);
+}

@@ -1,0 +1,135 @@
+/*
+ * Design tokens.
+ *
+ * These are the chrome of the application: surfaces, spacing, type scale,
+ * motion curves. They describe how the interface is drawn, not what it says.
+ *
+ * Nothing in this file encodes a domain value. Risk tier colours, node kind
+ * colours and edge styles are configuration, they live in MySQL, and they are
+ * written onto the document as custom properties at runtime once the
+ * corresponding API responses arrive. See src/theme/applyRuntimeTheme.ts.
+ */
+
+:root {
+  /* Surfaces */
+  --bg-app: #0a0e1a;
+  --bg-card: rgba(15, 21, 42, 0.65);
+  --bg-panel: rgba(18, 24, 48, 0.7);
+  --bg-raised: rgba(28, 36, 66, 0.75);
+  --bg-sunken: rgba(6, 9, 18, 0.55);
+  --bg-overlay: rgba(4, 7, 15, 0.72);
+
+  /* Borders and separation */
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --border-glass-strong: rgba(255, 255, 255, 0.14);
+  --border-subtle: rgba(255, 255, 255, 0.05);
+
+  /* Type */
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-inverse: #0a0e1a;
+
+  /* Accents */
+  --accent-cyan: #38bdf8;
+  --accent-purple: #8b5cf6;
+  --accent-cyan-soft: rgba(56, 189, 248, 0.14);
+  --accent-purple-soft: rgba(139, 92, 246, 0.14);
+
+  /* Glass */
+  --glass-blur: 20px;
+  --glass-saturation: 180%;
+  --glass-highlight: rgba(255, 255, 255, 0.05);
+
+  /* Motion. Mirrored in src/theme/motion.ts for the JS animation layer. */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-instant: 90ms;
+  --duration-fast: 160ms;
+  --duration-base: 240ms;
+  --duration-slow: 500ms;
+  --stagger-step: 80ms;
+  --stagger-cap: 1200ms;
+
+  /* Spacing */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-pill: 999px;
+
+  /* Elevation. Restrained: one ambient shadow, one lift. */
+  --shadow-ambient: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-panel: 0 18px 44px rgba(0, 0, 0, 0.42);
+  --shadow-lift: 0 22px 60px rgba(0, 0, 0, 0.5);
+
+  /* Type scale */
+  --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Cascadia Mono', ui-monospace, monospace;
+  --text-2xs: 10px;
+  --text-xs: 11px;
+  --text-sm: 12px;
+  --text-base: 13px;
+  --text-md: 15px;
+  --text-lg: 18px;
+  --text-xl: 24px;
+  --text-2xl: 32px;
+  --text-3xl: 42px;
+  --leading-tight: 1.2;
+  --leading-normal: 1.55;
+  --tracking-wide: 0.06em;
+  --tracking-wider: 0.12em;
+
+  /* Layout */
+  --sidebar-width: 244px;
+  --sidebar-width-collapsed: 64px;
+  --topbar-height: 58px;
+  --statusbar-height: 30px;
+  --content-max-width: 1680px;
+
+  /* Focus. Visible, high contrast, never removed. */
+  --focus-ring: 0 0 0 2px var(--bg-app), 0 0 0 4px var(--accent-cyan);
+  --focus-ring-inset: inset 0 0 0 1px var(--accent-cyan);
+
+  /* Neutral state colouring for chrome that carries no domain meaning.
+     Anything that reports a domain status takes its colour from the API. */
+  --state-neutral: #64748b;
+  --state-positive: #10b981;
+  --state-negative: #ef4444;
+  --state-unknown: #475569;
+
+  --z-content: 1;
+  --z-sticky: 20;
+  --z-sidebar: 30;
+  --z-dropdown: 40;
+  --z-dialog: 60;
+  --z-toast: 70;
+}
+
+/*
+ * Honour the operating system preference completely. Durations collapse to
+ * near zero rather than to zero so that transitionend and animation callbacks
+ * still fire and no state machine stalls waiting for one.
+ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-instant: 1ms;
+    --duration-fast: 1ms;
+    --duration-base: 1ms;
+    --duration-slow: 1ms;
+    --stagger-step: 0ms;
+    --stagger-cap: 0ms;
+  }
+}

@@ -1,0 +1,31 @@
+.app-shell {
+  min-height: 100vh;
+}
+
+.app-shell__body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin-left: var(--sidebar-width);
+  transition: margin-left var(--duration-base) var(--ease-out-expo);
+}
+
+.app-shell__body--collapsed {
+  margin-left: var(--sidebar-width-collapsed);
+}
+
+.app-shell__main {
+  flex: 1;
+}
+
+.app-shell__content {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6) var(--space-10);
+}
+
+@media (max-width: 720px) {
+  .app-shell__content {
+    padding: var(--space-5) var(--space-4) var(--space-8);
+  }
+}

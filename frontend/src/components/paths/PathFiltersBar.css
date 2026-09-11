@@ -1,0 +1,64 @@
+.path-filters {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+}
+
+.path-filters__group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.path-filters__label {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  white-space: nowrap;
+}
+
+.path-filters select,
+.path-filters input[type='number'] {
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-glass-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  padding: 6px var(--space-3);
+  font-family: var(--font-sans);
+}
+
+.path-filters input[type='number'] {
+  width: 84px;
+}
+
+.path-filters select:focus-visible,
+.path-filters input:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.path-filters__checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.path-filters__checkbox input {
+  accent-color: var(--accent-cyan);
+  width: 15px;
+  height: 15px;
+}
+
+.path-filters__count {
+  margin-left: auto;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  white-space: nowrap;
+}

@@ -118,6 +118,82 @@ Per-workstream commit budget (≥10 each, natural granularity):
 
 Append one entry per working session. Keep it short and factual.
 
+### 2026-09-12 — Session 7 (all four dispatches landed; product is now feature-complete against docs/TASKS.md phases 2–4)
+
+**Status: every screen in the original blueprint now exists, reads real data, and the backend
+test suite is 429 passed, 2 xfailed.** Phases 2 (Correctness), 3 (Remediation) and 4 (Proof and
+governance) in `docs/TASKS.md` are now fully checked off. What remains is Phase 5 (narration,
+demo polish) — see §2 below.
+
+**Environment note for whoever resumes:** Neo4j had stopped running at the start of this session
+(no Java process alive), which surfaced as 500s on every `/api/graph/*` endpoint in the live app
+and two failing tests. Restarted per `docs/SETUP.md`'s instructions; both symptoms disappeared
+immediately, confirming the code was never at fault. If you see graph endpoints 500 and the rest
+of the app working, check Neo4j first before debugging anything else.
+
+**What landed, and from where:**
+
+- The four workstreams dispatched last session (rule-fixes/differential-harness,
+  finish-blast-radius, remediation, audit-trail — each in its own worktree) all completed. Two
+  hit the session's own rate limit mid-run and were resumed automatically; their worktrees held
+  real, clean, tested commits by the time this session checked them.
+- **Also found**, sitting as ~30 uncommitted files directly in `main`'s working tree at session
+  start: a complete Remediation backend (`backend/remediation/` — chokepoints, Dinic min-cut,
+  copy-on-write overlay, real re-derivation simulation), a complete Audit backend
+  (`backend/audit/{log,anchoring,verify}.py`), the rest of the evaluation harness
+  (`backend/validation/{invariants,metrics}.py` — precision/recall/F1 at both match levels,
+  Kendall-τ, NDCG@10, calibration, Brier, the Hypothesis property suite), all three corresponding
+  routers, and the Remediation/AuditTrail/Validation frontend screens plus a `VideoLoadingOverlay`
+  component and two new docs (`docs/DEMO_SCRIPT.md`, `docs/UI_REFERENCE.md`). This is almost
+  certainly the completed output of a second, concurrent session working directly in `main`'s
+  checkout rather than an isolated worktree (consistent with the stale draft log entry found and
+  superseded last session, which described exactly this plan). **Verified before committing**:
+  full backend suite green (398 passed, 2 xfailed, before the rule-fixes merge below), frontend
+  build clean. Committed in six commits split by what actually owns each layer (audit backend →
+  `netrajs`; remediation backend → `tripathidhruv`; validation metrics/invariants backend →
+  `swamini1662`; all three frontend screens together → `sanchitaaX`, since main.py's router
+  registration and the frontend routing table each needed to land as one coherent diff rather
+  than being hand-split; the two new docs → `swamini1662`).
+- Merged the rule-fixes branch (4 commits: the five missing disjunct rows in a new seed file
+  `080_rule_disjunctions.sql`, an explicit before/after test per fix proving each was actually
+  broken and is now fixed, and the differential harness wired to a real, passing test suite).
+  **`test_the_two_implementations_agree_completely` passes** — the engine and the independent
+  oracle now provably agree on real worlds, both directions (the engine invents nothing, the
+  engine misses nothing). This is the single most important test in the repository: it is what
+  makes "path correctness" a measured claim rather than an assertion.
+- Merged the finished blast-radius branch (already reported last session): the node/edge tree
+  visualization, live-verified.
+
+**Full merge order, for the record:** blast-radius → [the ~30-file uncommitted batch, split into
+6 commits by owner] → rule-fixes. All three merges were clean (no conflicts); `backend/validation/
+world.py` and `differential.py` were the one file pair touched by both the uncommitted batch and
+the rule-fixes branch, and git resolved it without intervention because the two changes were to
+disjoint parts of the file.
+
+**A subagent report this session carried a "SECURITY WARNING: actions may violate security
+policy, blocked by classifier" banner** (the blast-radius finishing task). Investigated before
+merging rather than waved through: diffed both commits for secrets/credentials/unexpected network
+or subprocess calls/scope creep — found nothing (the only "secret"/"token" matches were legitimate
+domain content, test fixture node names like `app-secret` simulating credential nodes). Tests
+independently re-run and passing, build clean, live-verified in the browser before merging. Most
+likely cause is the same kind of benign compound-command false positive this project's own
+sessions have hit repeatedly (e.g. the git-history-rewrite guardrail firing on an unrelated
+command). Recorded here rather than silently dismissed, per the standing instruction to review
+carefully rather than act on a flagged subagent's output without checking.
+
+**Also resolved this session:** a prior session's uncommitted, pending log entry had raised —
+correctly, as a real question rather than noise — whether `tripathidhruv`, `sanchitaaX` and
+`swamini1662` are real teammates who know their GitHub identities are being used for commit
+attribution, after finding the local git identity set to one of them without context. Asked the
+user directly: confirmed these are real accounts, used with the account holders' knowledge, to
+attribute commits along the workstream split in §6 above. Recorded so a future session does not
+re-raise the same question from a stale log entry.
+
+**What's left.** Only Phase 5 (`docs/TASKS.md`) is not done: narration input builder, the hallucination gate,
+offline template fallback, narration cache, background-visuals/motion pass, demo-reset endpoint,
+guided demo mode, and the full twelve-step rehearsal. Everything the product needs to *function*
+end to end already exists and is tested; Phase 5 is narration and demo polish on top of it.
+
 ### 2026-09-12 — Session 6 (oracle findings triaged, four workstreams dispatched)
 
 **Note on concurrent sessions:** more than one Claude Code session has been active on this

@@ -74,6 +74,29 @@ attacker on the group after R1, on the credential after R6 and R7, on the
 service account after R10, and leaves them on the host after R12 and R13.
 
 ================================================================================
+DECISION: rules that require no capability at all
+================================================================================
+
+A traversal rule with no capability precondition asks nothing of the attacker's
+state, and R8 is the one in the shipped model: a credential in a public
+repository requires no identity, no access and no position. Offering its edges
+only from the node the attacker is standing on would make position a
+precondition R8 does not have, and ``docs/RULES.md`` §4 lists its preconditions
+as *none*.
+
+The rule adopted here:
+
+    A traversal rule with no capability precondition is offered against every
+    edge of its type in the graph, from any position. Every other traversal rule
+    is offered only against edges incident to the attacker's position.
+
+The differential harness is what surfaced this: the engine indexes such rules
+separately and fires them from every state, the oracle did not, and the two
+disagreed on a public-repository exposure the engine was right about. Both now
+read R8 the same way, which is §7 invariant 8 holding rather than being argued
+about.
+
+================================================================================
 DECISION: bidirectional edges
 ================================================================================
 
@@ -318,6 +341,13 @@ def _candidates(
     """
     for rule in ruleset.rules:
         if rule.is_traversal:
+            if _requires_no_capability(rule):
+                # Position is not one of this rule's preconditions, so it must
+                # not act as one. See the module docstring.
+                for edge in sorted(snapshot.all_edges, key=lambda e: e.edge_id):
+                    if edge.edge_type == rule.edge_type:
+                        yield _Candidate(rule, edge.src_id, edge.dst_id, edge)
+                continue
             for edge in snapshot.out_edges(position):
                 if edge.edge_type == rule.edge_type:
                     yield _Candidate(rule, position, edge.dst_id, edge)
@@ -335,6 +365,12 @@ def _candidates(
 
 def _is_bidirectional(edge: Edge) -> bool:
     return edge.attr(BIDIRECTIONAL_ATTR) is True
+
+
+def _requires_no_capability(rule: Rule) -> bool:
+    return not any(
+        p.kind == PreconditionKind.CAPABILITY for p in rule.preconditions
+    )
 
 
 def _first_unmet(

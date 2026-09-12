@@ -18,7 +18,10 @@ from oracle.loader import (
     RuleDataError,
     RuleSet,
     SeedFileRowSource,
+    load_from_seed_file,
+    load_from_seed_files,
     load_ruleset,
+    rule_seed_files,
 )
 from oracle.preconditions import (
     MISSING,
@@ -56,8 +59,11 @@ __all__ = [
     "discover",
     "entry_nodes_for",
     "evaluate_precondition",
+    "load_from_seed_file",
+    "load_from_seed_files",
     "load_ruleset",
     "materialise_grants",
     "resolve_capability",
+    "rule_seed_files",
     "verify_path",
 ]

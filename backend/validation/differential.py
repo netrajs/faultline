@@ -333,7 +333,17 @@ def _is_comparable(path: AttackPath, engine: Discovery, model: ModelSource) -> b
     depended on is a side excursion that happened to be affordable rather than
     a step the attack needed -- the oracle enumerates those because it prunes
     nothing, which is the point of it.
+
+    Neither exclusion may swallow a path built out of a rule the engine does not
+    have. ``is_minimal_proof`` cannot account for a hop whose rule it cannot look
+    up, and answers "not minimal" -- which would file the two implementations
+    disagreeing about the rule set itself under the one filter meant to be about
+    search behaviour, and report agreement.
     """
+    known = {rule.rule_id for rule in model.engine_ruleset.rules}
+    if any(hop.rule_id not in known for hop in path.hops):
+        return True
+
     last = path.hops[-1]
     arrival = frozenset(
         cap

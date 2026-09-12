@@ -17,11 +17,14 @@ from fastapi.responses import JSONResponse
 
 from app.core.settings import ConfigError, load_settings
 from app.db import close_all, fetch_one, store_health
+from app.routers import audit as audit_router
 from app.routers import blast_radius as blast_radius_router
 from app.routers import config as config_router
 from app.routers import graph as graph_router
 from app.routers import paths as paths_router
+from app.routers import remediation as remediation_router
 from app.routers import settings as settings_router
+from app.routers import validation as validation_router
 
 log = logging.getLogger("faultline")
 
@@ -75,6 +78,9 @@ def create_app() -> FastAPI:
     app.include_router(paths_router.router)
     app.include_router(settings_router.router)
     app.include_router(blast_radius_router.router)
+    app.include_router(remediation_router.router)
+    app.include_router(audit_router.router)
+    app.include_router(validation_router.router)
 
     @app.exception_handler(ConfigError)
     async def config_error_handler(_: Request, exc: ConfigError) -> JSONResponse:

@@ -1,0 +1,29 @@
+{
+  "_comment": "Recorded anchoring sessions for ANCHOR_MODE=replay. Every field here is clearly fictional placeholder data -- see docs/SCOPE.md D7 on why replay is a documented third anchoring mode (recorded receipts, always labelled as such) rather than the 'no mock data' violation that rule targets in the frontend. tx_hash and block_number are NOT reused verbatim: anchoring.py derives them per checkpoint from these session templates so every replayed anchor still varies with the epoch and root it is standing in for, instead of every demo run producing byte-identical 'transactions'.",
+  "recorded_sessions": [
+    {
+      "mode": "base-sepolia",
+      "chain_id": 84532,
+      "contract_address": "0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b",
+      "block_number_base": 18420000,
+      "gas_used": 51284,
+      "explorer_url_template": "https://sepolia.basescan.org/tx/{tx_hash}"
+    },
+    {
+      "mode": "polygon-amoy",
+      "chain_id": 80002,
+      "contract_address": "0x2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c",
+      "block_number_base": 9310000,
+      "gas_used": 48771,
+      "explorer_url_template": "https://amoy.polygonscan.com/tx/{tx_hash}"
+    },
+    {
+      "mode": "anvil",
+      "chain_id": 31337,
+      "contract_address": "0x5fbdb2315678afecb367f032d93f642f64180aa",
+      "block_number_base": 100,
+      "gas_used": 46392,
+      "explorer_url_template": "local anvil chain, no public explorer -- tx {tx_hash}"
+    }
+  ]
+}

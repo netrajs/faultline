@@ -21,6 +21,11 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       port: devPort,
+      // Listen on all local hostnames, not just localhost/127.0.0.1 -- lets
+      // the dev server answer to a custom hosts-file entry (e.g. "faultline")
+      // so the address bar can show the project's name instead of localhost.
+      host: true,
+      allowedHosts: ['faultline', 'faultline.local', 'localhost'],
       // The API is served from a separate process during development. Proxying
       // keeps the browser on one origin, so there is no CORS configuration to
       // keep in step between the two codebases.

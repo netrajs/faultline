@@ -14,7 +14,16 @@ export const FALLBACK_NAV_ITEMS: NavItem[] = [
 ];
 
 /** Routes this build actually renders, used to decide whether a nav item is live or a stub. */
-export const IMPLEMENTED_ROUTES = new Set(['/', '/paths', '/graph', '/settings']);
+export const IMPLEMENTED_ROUTES = new Set([
+  '/',
+  '/paths',
+  '/graph',
+  '/settings',
+  '/blast',
+  '/remediation',
+  '/validation',
+  '/audit',
+]);
 
 export function findActiveNavItem(pathname: string, items: NavItem[]): NavItem | undefined {
   if (items.length === 0) return undefined;

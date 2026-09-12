@@ -1,0 +1,231 @@
+.recommendation-table {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.recommendation-table__scroll {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.recommendation-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-xs);
+}
+
+.recommendation-table th,
+.recommendation-table td {
+  padding: var(--space-2) var(--space-3);
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.recommendation-table th {
+  background: var(--bg-sunken);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  font-size: var(--text-2xs);
+  font-weight: 700;
+}
+
+.recommendation-table tbody tr {
+  cursor: pointer;
+  border-top: 1px solid var(--border-subtle);
+  transition: background var(--duration-fast) var(--ease-standard);
+}
+
+.recommendation-table tbody tr:hover {
+  background: var(--bg-sunken);
+}
+
+.recommendation-table tbody tr:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring-inset);
+}
+
+.recommendation-table__row--selected,
+.recommendation-table__row--selected:hover {
+  background: var(--accent-cyan-soft);
+}
+
+.recommendation-table__rank-head,
+.recommendation-table__rank {
+  width: 34px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.recommendation-table__d3fend {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  color: var(--accent-purple);
+}
+
+/* A generated title runs to sixty-odd characters and a node id to another
+   forty, which in an auto-layout table makes this column as wide as it likes
+   and pushes the numbers off the end of the row. `max-width` on the cell alone
+   does nothing here -- auto table layout ignores it -- so the constraint and
+   the ellipsis both go on the block inside it, and the full text stays
+   available through the `title` attribute. Same pattern as
+   .node-browser__row-name. */
+.recommendation-table__target {
+  max-width: 300px;
+}
+
+.recommendation-table__target-title,
+.recommendation-table__target-id {
+  display: block;
+  max-width: 276px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recommendation-table__target-title {
+  color: var(--text-primary);
+}
+
+.recommendation-table__target-id {
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  color: var(--text-muted);
+}
+
+.recommendation-table__fix-cell {
+  max-width: 170px;
+}
+
+.recommendation-table__fix {
+  display: block;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.recommendation-table__coverage {
+  min-width: 150px;
+}
+
+.recommendation-table__bar {
+  display: block;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-sunken);
+  overflow: hidden;
+  margin-bottom: var(--space-1);
+}
+
+.recommendation-table__bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--accent-cyan);
+}
+
+.recommendation-table__coverage-value {
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.recommendation-table__coverage-pct {
+  margin-left: var(--space-2);
+  color: var(--text-muted);
+}
+
+.recommendation-table__unknown {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.recommendation-table__risk {
+  font-variant-numeric: tabular-nums;
+}
+
+.recommendation-table__risk-before {
+  color: var(--text-secondary);
+}
+
+.recommendation-table__arrow {
+  margin: 0 var(--space-2);
+  color: var(--text-muted);
+}
+
+.recommendation-table__risk-after {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.recommendation-table__risk-after--down {
+  color: var(--state-positive);
+}
+
+.recommendation-table__cost span {
+  display: block;
+  color: var(--text-secondary);
+}
+
+.recommendation-table__disruption {
+  font-size: var(--text-2xs);
+  color: var(--text-muted);
+}
+
+.recommendation-table__priority {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+
+.recommendation-table__basis {
+  display: inline-block;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-2xs);
+  font-weight: 700;
+}
+
+.recommendation-table__basis--estimate {
+  color: var(--text-muted);
+  background: var(--bg-sunken);
+}
+
+.recommendation-table__basis--measured {
+  color: var(--accent-emerald);
+  background: var(--accent-emerald-soft);
+}
+
+.recommendation-table__state {
+  display: inline-block;
+  padding: 2px var(--space-2);
+  border: 1px solid;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-2xs);
+  font-weight: 700;
+}
+
+.recommendation-table__approval {
+  margin-left: var(--space-2);
+  color: var(--accent-amber);
+}
+
+.recommendation-table__legend {
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+  color: var(--text-muted);
+  max-width: 92ch;
+}
+
+.recommendation-table__legend strong {
+  color: var(--text-secondary);
+}

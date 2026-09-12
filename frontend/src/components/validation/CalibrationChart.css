@@ -1,0 +1,137 @@
+.calibration {
+  display: grid;
+  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.calibration__empty {
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--text-muted);
+  max-width: 76ch;
+}
+
+.calibration__chart {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.calibration__plot {
+  fill: var(--bg-sunken);
+  stroke: var(--border-glass);
+  stroke-width: 1;
+}
+
+.calibration__gridline {
+  stroke: var(--border-glass);
+  stroke-width: 0.5;
+}
+
+.calibration__ideal {
+  stroke: var(--text-muted);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+
+.calibration__curve {
+  fill: none;
+  stroke: var(--accent-cyan);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.calibration__error {
+  stroke: var(--accent-amber);
+  stroke-width: 1.5;
+}
+
+.calibration__dot {
+  fill: var(--accent-cyan);
+  fill-opacity: 0.75;
+  stroke: var(--surface-panel, #fff);
+  stroke-width: 1.5;
+}
+
+.calibration__tick {
+  font-size: 8px;
+  fill: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.calibration__tick--x {
+  text-anchor: middle;
+}
+
+.calibration__tick--y {
+  text-anchor: end;
+}
+
+.calibration__axis {
+  font-size: 9px;
+  fill: var(--text-muted);
+  text-anchor: middle;
+}
+
+.calibration__bands {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.calibration__band {
+  display: grid;
+  grid-template-columns: 82px 72px minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  align-items: baseline;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+}
+
+.calibration__band:nth-child(odd) {
+  background: var(--bg-sunken);
+}
+
+.calibration__band-range {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.calibration__band-count,
+.calibration__band-values {
+  color: var(--text-secondary);
+}
+
+.calibration__band-gap {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.calibration__band-gap--even {
+  color: var(--state-positive);
+}
+
+.calibration__band-gap--over {
+  color: var(--state-negative);
+}
+
+.calibration__band-gap--under {
+  color: var(--accent-amber);
+}
+
+@media (max-width: 900px) {
+  .calibration {
+    grid-template-columns: 1fr;
+  }
+
+  .calibration__band {
+    grid-template-columns: 70px 64px minmax(0, 1fr);
+  }
+
+  .calibration__band-gap {
+    grid-column: 1 / span 3;
+  }
+}

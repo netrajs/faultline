@@ -1,0 +1,277 @@
+.differential {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.differential__header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.differential__header > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.differential__icon {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: var(--accent-purple-soft);
+  color: var(--accent-purple);
+  font-size: var(--text-lg);
+}
+
+.differential__title {
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.differential__intro {
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--text-secondary);
+  max-width: 80ch;
+}
+
+.differential__toggle {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.differential__verdict {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: fit-content;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.differential__verdict--clean {
+  color: var(--state-positive);
+  background: var(--accent-emerald-soft);
+  border-color: var(--accent-emerald-line);
+}
+
+.differential__verdict--split {
+  color: var(--state-warning);
+  background: var(--accent-amber-soft);
+  border-color: var(--accent-amber-line);
+}
+
+.differential__rate {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  opacity: 0.8;
+}
+
+.differential__table {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+}
+
+.differential__row {
+  display: grid;
+  grid-template-columns: minmax(200px, 2.4fr) repeat(5, minmax(76px, 0.7fr)) minmax(96px, 0.9fr);
+  gap: var(--space-3);
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--border-glass);
+  min-width: 780px;
+}
+
+.differential__row:first-child {
+  border-top: none;
+}
+
+.differential__row--head {
+  background: var(--bg-sunken);
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.differential__row--differ {
+  background: var(--accent-amber-soft);
+}
+
+.differential__row--error {
+  background: var(--accent-rose-soft);
+}
+
+.differential__case {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.differential__case-title {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.differential__case-mechanism {
+  font-size: var(--text-2xs);
+  line-height: var(--leading-normal);
+  color: var(--text-muted);
+}
+
+.differential__figure {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+
+.differential__figure em {
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-size: var(--text-2xs);
+  color: var(--text-muted);
+}
+
+.differential__verdict-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.differential__verdict-cell--agree {
+  color: var(--state-positive);
+}
+
+.differential__verdict-cell--differ {
+  color: var(--state-warning);
+}
+
+.differential__verdict-cell--error {
+  color: var(--state-negative);
+}
+
+.differential__disputes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.differential__disputes-title {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.differential__dispute h4 {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.differential__dispute-error {
+  font-size: var(--text-xs);
+  color: var(--state-negative);
+}
+
+.differential__path {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--bg-sunken);
+  margin-bottom: var(--space-2);
+}
+
+.differential__found-by {
+  flex-shrink: 0;
+  padding: 1px var(--space-2);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.differential__found-by--engine {
+  color: var(--accent-cyan);
+  background: var(--accent-cyan-soft);
+}
+
+.differential__found-by--reference {
+  color: var(--accent-purple);
+  background: var(--accent-purple-soft);
+}
+
+.differential__steps {
+  flex: 1;
+  min-width: 220px;
+  margin: 0;
+  padding-left: var(--space-5);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  line-height: var(--leading-normal);
+  color: var(--text-secondary);
+}
+
+.differential__target {
+  font-size: var(--text-2xs);
+  color: var(--text-muted);
+}
+
+.differential__legend,
+.differential__provenance {
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+  color: var(--text-muted);
+  max-width: 88ch;
+}
+
+.differential__provenance {
+  font-size: var(--text-2xs);
+}
+
+@media (max-width: 760px) {
+  .differential__header {
+    flex-direction: column;
+  }
+
+  .differential__toggle {
+    align-self: flex-start;
+  }
+}

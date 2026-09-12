@@ -1,0 +1,109 @@
+.dependency-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.dependency-panel__none,
+.dependency-panel__legend {
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+  color: var(--text-muted);
+  max-width: 92ch;
+}
+
+.dependency-panel__legend strong {
+  color: var(--text-secondary);
+}
+
+.dependency-panel__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.dependency-panel__row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-sunken);
+  border-left-width: 3px;
+}
+
+.dependency-panel__row--blocking {
+  border-left-color: var(--state-negative);
+  background: var(--accent-rose-soft);
+}
+
+.dependency-panel__row--warning {
+  border-left-color: var(--state-warning);
+  background: var(--accent-amber-soft);
+}
+
+.dependency-panel__row--info {
+  border-left-color: var(--accent-cyan);
+}
+
+.dependency-panel__icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-size: var(--text-md);
+}
+
+.dependency-panel__row--blocking .dependency-panel__icon {
+  color: var(--state-negative);
+}
+
+.dependency-panel__row--warning .dependency-panel__icon {
+  color: var(--state-warning);
+}
+
+.dependency-panel__row--info .dependency-panel__icon {
+  color: var(--accent-cyan);
+}
+
+.dependency-panel__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.dependency-panel__tags {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  font-size: var(--text-2xs);
+}
+
+.dependency-panel__severity {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-secondary);
+}
+
+.dependency-panel__kind {
+  padding: 1px var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--bg-card);
+  color: var(--text-muted);
+}
+
+.dependency-panel__node {
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+}
+
+.dependency-panel__description {
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+  color: var(--text-primary);
+}

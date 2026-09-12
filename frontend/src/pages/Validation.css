@@ -1,0 +1,110 @@
+.validation {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.validation__accuracy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.validation__header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.validation__header > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.validation__icon {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: var(--accent-cyan-soft);
+  color: var(--accent-cyan);
+  font-size: var(--text-lg);
+}
+
+.validation__title {
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.validation__intro {
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--text-secondary);
+  max-width: 84ch;
+}
+
+.validation__legend {
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+  color: var(--text-muted);
+  max-width: 92ch;
+}
+
+.validation__caveat {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--accent-amber-soft);
+  border: 1px solid var(--accent-amber-line);
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+  color: var(--text-secondary);
+  max-width: 92ch;
+}
+
+.validation__caveat > i {
+  color: var(--accent-amber);
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+
+.validation__calibration {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-glass);
+}
+
+.validation__section-title {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.validation__section-intro {
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+  color: var(--text-secondary);
+  max-width: 92ch;
+}
+
+.validation__provenance {
+  font-size: var(--text-2xs);
+  line-height: var(--leading-normal);
+  color: var(--text-muted);
+  max-width: 96ch;
+}
+
+@media (max-width: 760px) {
+  .validation__header {
+    flex-direction: column;
+  }
+}

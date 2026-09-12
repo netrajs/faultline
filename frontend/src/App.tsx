@@ -5,12 +5,15 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { IntroSplash } from '@/components/intro/IntroSplash';
 import { Layout } from '@/components/layout/Layout';
 import { AttackPaths } from '@/pages/AttackPaths';
+import { AuditTrail } from '@/pages/AuditTrail';
 import { BlastRadius } from '@/pages/BlastRadius';
 import { Dashboard } from '@/pages/Dashboard';
 import { GraphExplorer } from '@/pages/GraphExplorer';
 import { NotFound } from '@/pages/NotFound';
 import { PathDetail } from '@/pages/PathDetail';
+import { Remediation } from '@/pages/Remediation';
 import { Settings } from '@/pages/Settings';
+import { Validation } from '@/pages/Validation';
 import { prefersReducedMotion } from '@/theme/motion';
 
 const queryClient = new QueryClient({
@@ -85,7 +88,10 @@ export function App() {
               {/* Path fixed by the nav row seeded in app_config, so the sidebar
                   link and the router agree without either hardcoding the other. */}
               <Route path="blast" element={<BlastRadius />} />
+              <Route path="remediation" element={<Remediation />} />
               <Route path="settings" element={<Settings />} />
+              <Route path="validation" element={<Validation />} />
+              <Route path="audit" element={<AuditTrail />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>

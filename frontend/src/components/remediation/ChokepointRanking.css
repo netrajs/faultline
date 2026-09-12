@@ -1,0 +1,74 @@
+.chokepoint-ranking {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.chokepoint-ranking__scroll {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.chokepoint-ranking table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-xs);
+}
+
+.chokepoint-ranking th,
+.chokepoint-ranking td {
+  padding: var(--space-2) var(--space-3);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.chokepoint-ranking th {
+  background: var(--bg-sunken);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  font-size: var(--text-2xs);
+  font-weight: 700;
+}
+
+.chokepoint-ranking tbody tr {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.chokepoint-ranking tbody tr:hover {
+  background: var(--bg-sunken);
+}
+
+.chokepoint-ranking__rank {
+  font-weight: 700;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.chokepoint-ranking__kind {
+  text-transform: capitalize;
+  color: var(--text-secondary);
+}
+
+.chokepoint-ranking__target {
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
+.chokepoint-ranking__number {
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+.chokepoint-ranking__legend,
+.chokepoint-ranking__empty {
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+  color: var(--text-muted);
+  max-width: 92ch;
+}
+
+.chokepoint-ranking__legend strong {
+  color: var(--text-secondary);
+}

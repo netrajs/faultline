@@ -1,0 +1,177 @@
+.checkpoint-history {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.checkpoint-history__header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.checkpoint-history__header > div {
+  flex: 1;
+  min-width: 240px;
+}
+
+.checkpoint-history__icon {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: var(--accent-purple-soft);
+  color: var(--accent-purple);
+  font-size: var(--text-lg);
+}
+
+.checkpoint-history__title {
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.checkpoint-history__intro {
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--text-secondary);
+  max-width: 76ch;
+}
+
+.checkpoint-history__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.checkpoint-history__controls select {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  padding: 7px var(--space-3);
+  font-family: var(--font-sans);
+}
+
+.checkpoint-history__table-scroll {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.checkpoint-history__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-xs);
+}
+
+.checkpoint-history__table th,
+.checkpoint-history__table td {
+  padding: var(--space-3);
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.checkpoint-history__table th {
+  background: var(--bg-sunken);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  font-size: var(--text-2xs);
+}
+
+.checkpoint-history__table tbody tr:hover {
+  background: var(--bg-sunken);
+}
+
+.checkpoint-history__epoch {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.checkpoint-history__number {
+  font-variant-numeric: tabular-nums;
+}
+
+.checkpoint-history__mono {
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+}
+
+.checkpoint-history__mono a {
+  color: var(--accent-cyan);
+  text-decoration: none;
+}
+
+.checkpoint-history__mono a:hover {
+  text-decoration: underline;
+}
+
+.checkpoint-history__mode {
+  display: inline-block;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--bg-sunken);
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.checkpoint-history__status {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.checkpoint-history__status--confirmed {
+  color: var(--state-positive);
+  background: var(--accent-emerald-soft);
+}
+
+.checkpoint-history__status--recorded {
+  color: var(--accent-purple);
+  background: var(--accent-purple-soft);
+  text-transform: none;
+}
+
+.checkpoint-history__status--pending {
+  color: var(--state-warning);
+  background: var(--accent-amber-soft);
+}
+
+.checkpoint-history__status--failed {
+  color: var(--state-negative);
+  background: rgba(220, 38, 38, 0.1);
+}
+
+.checkpoint-history__no-receipt {
+  color: var(--text-muted);
+  font-style: italic;
+  white-space: normal;
+}
+
+.checkpoint-history__legend {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  max-width: 80ch;
+}
+
+@media (max-width: 700px) {
+  .checkpoint-history__controls {
+    width: 100%;
+  }
+
+  .checkpoint-history__controls select {
+    flex: 1;
+  }
+}
